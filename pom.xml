@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.kurumifake</groupId>
+    <groupId>me.hungnguyennaz</groupId>
     <artifactId>neonpaper-parent</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>pom</packaging>
