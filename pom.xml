@@ -1,0 +1,51 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.kurumifake</groupId>
+    <artifactId>neonpaper-parent</artifactId>
+    <version>dev-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>NeonPaper (Parent)</name>
+
+    <repositories>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
+        <repository>
+            <id>velocity-snapshots</id>
+            <url>https://nexus.velocitypowered.com/repository/velocity-artifacts-snapshots/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+    <modules>
+        <module>NeonPaper-API</module>
+        <module>NeonPaper-Server</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>owasp-dependency-check</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>6.5.3</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
