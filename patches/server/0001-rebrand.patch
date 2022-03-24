@@ -1,0 +1,150 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Thu, 24 Mar 2022 16:35:07 +0000
+Subject: [PATCH] rebrand
+
+
+diff --git a/pom.xml b/pom.xml
+index f86a4cf893bfdb1a12c156361ca166a9abd7e8db..db6e4ece69bc21f12575912caf9b847e0d061344 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -1,12 +1,12 @@
+ <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+-    <groupId>dev.pomf.dionysus</groupId>
+-    <artifactId>dionysus</artifactId>
++    <groupId>me.hungnguyennaz</groupId>
++    <artifactId>neonpaper</artifactId>
+     <packaging>jar</packaging>
+     <version>1.12.2-R0.1-SNAPSHOT</version>
+-    <name>Dionysus</name>
+-    <url>https://github.com/nopjmp/Dionysus</url>
++    <name>NeonPaper</name>
++    <url>https://github.com/hungnguyennaz/NeonPaper</url>
+ 
+     <properties>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+@@ -23,8 +23,8 @@
+     </properties>
+ 
+     <parent>
+-        <groupId>dev.pomf.dionysus</groupId>
+-        <artifactId>dionysus-parent</artifactId>
++        <groupId>me.hungnguyennaz</groupId>
++        <artifactId>neonpaper-parent</artifactId>
+         <version>dev-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+@@ -38,8 +38,8 @@
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+-            <groupId>dev.pomf.dionysus</groupId>
+-            <artifactId>dionysus-api</artifactId>
++            <groupId>me.hungnguyennaz</groupId>
++            <artifactId>neonpaper-api</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
+@@ -164,7 +164,7 @@
+ 
+     <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
+     <build>
+-        <finalName>dionysus-${minecraft.version}</finalName>
++        <finalName>neonpaper-${minecraft.version}</finalName>
+         <defaultGoal>install</defaultGoal> <!-- Paper -->
+         <plugins>
+             <plugin>
+@@ -172,7 +172,7 @@
+                 <artifactId>gitdescribe-maven-plugin</artifactId>
+                 <version>1.3</version>
+                 <configuration>
+-                    <outputPrefix>git-Dionysus-</outputPrefix>
++                    <outputPrefix>git-NeonPaper-</outputPrefix>
+                     <scmDirectory>..</scmDirectory>
+                 </configuration>
+                 <executions>
+diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
+index cb833d15b3ae128b005c9dd042dacfe8a8323fdd..4d34f1aceac210faeb42a1aca64f2f328e8a2f92 100644
+--- a/src/main/java/com/destroystokyo/paper/Metrics.java
++++ b/src/main/java/com/destroystokyo/paper/Metrics.java
+@@ -578,7 +578,7 @@ public class Metrics {
+             boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
+             // Only start Metrics, if it's enabled in the config
+             if (config.getBoolean("enabled", true)) {
+-                Metrics metrics = new Metrics("Dionysus", serverUUID, logFailedRequests, Bukkit.getLogger());
++                Metrics metrics = new Metrics("NeonPaper", serverUUID, logFailedRequests, Bukkit.getLogger());
+ 
+                 metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
+                     String minecraftVersion = Bukkit.getVersion();
+@@ -588,7 +588,7 @@ public class Metrics {
+ 
+                 metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
+                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
+-                metrics.addCustomChart(new Metrics.SimplePie("dionysus_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Dionysus - use our bstats
++                metrics.addCustomChart(new Metrics.SimplePie("neonpaper_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Dionysus - use our bstats
+ 
+                 metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
+                     Map<String, Map<String, Integer>> map = new HashMap<>();
+diff --git a/src/main/java/dev/pomf/dionysus/DionysusConfig.java b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
+index f078bbd9c9dd1447129c8d95314a514d8969471d..0c38bdfbc9a5c763f2f1fa9ca517b46740b8b9ac 100644
+--- a/src/main/java/dev/pomf/dionysus/DionysusConfig.java
++++ b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
+@@ -211,7 +211,7 @@ public class DionysusConfig {
+         }
+     }
+ 
+-    public static String serverModName = "Dionysus";
++    public static String serverModName = "NeonPaper";
+     private static void serverModName() {
+         serverModName = getString("settings.server-mod-name", serverModName);
+     }
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index fc969ddeee05779293a7dc0377b66db17ff01017..8fb7d1d5ee5621cd0a626f5ba620af919bffb4f0 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -140,7 +140,7 @@ import javax.annotation.Nonnull; // Paper
+ 
+ 
+ public final class CraftServer implements Server {
+-    private final String serverName = "Dionysus";
++    private final String serverName = "NeonPaper";
+     private final String serverVersion;
+     private final String bukkitVersion = Versioning.getBukkitVersion();
+     private final Logger logger = Logger.getLogger("Minecraft");
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index e6d3d4f9505442a80cf095fcdeaa65640b407262..395c1284d471153c811dd14c5e328e615f66a4b8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -1,29 +1,9 @@
+ package org.bukkit.craftbukkit.util;
+ 
+-import java.io.IOException;
+-import java.io.InputStream;
+-import java.util.Properties;
+-import java.util.logging.Level;
+-import java.util.logging.Logger;
+ import org.bukkit.Bukkit;
+ 
+ public final class Versioning {
+     public static String getBukkitVersion() {
+-        String result = "Unknown-Version";
+-
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.pomf.dionysus/dionysus-api/pom.properties"); // Dionysus
+-        Properties properties = new Properties();
+-
+-        if (stream != null) {
+-            try {
+-                properties.load(stream);
+-
+-                result = properties.getProperty("version");
+-            } catch (IOException ex) {
+-                Logger.getLogger(Versioning.class.getName()).log(Level.SEVERE, "Could not get Bukkit version!", ex);
+-            }
+-        }
+-
+-        return result;
++        return "1.12.2-R0.1-SNAPSHOT";
+     }
+ }
