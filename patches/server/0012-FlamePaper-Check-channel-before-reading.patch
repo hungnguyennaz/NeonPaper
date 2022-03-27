@@ -7,7 +7,7 @@ Original code by 2lstudios-mc, licensed under MIT
 You can find the original code on https://github.com/2lstudios-mc/FlamePaper
 
 diff --git a/src/main/java/net/minecraft/server/NetworkManager.java b/src/main/java/net/minecraft/server/NetworkManager.java
-index 704836bf9caf80d08e3b00fd3afffcee57a38bbf..3e5990825a5009851d7920c4f2b081fa4a095d5f 100644
+index 704836bf9caf80d08e3b00fd3afffcee57a38bbf..b91a0ba1d769576a4e047a7bd413dae03df8f156 100644
 --- a/src/main/java/net/minecraft/server/NetworkManager.java
 +++ b/src/main/java/net/minecraft/server/NetworkManager.java
 @@ -546,7 +546,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
@@ -16,7 +16,7 @@ index 704836bf9caf80d08e3b00fd3afffcee57a38bbf..3e5990825a5009851d7920c4f2b081fa
      protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit - fix decompile error
 -        this.a(channelhandlercontext, (Packet) object);
 +        // FlamePaper - Check if channel is opened before reading packet
-+        if (Logger()) {
++        if (isConnected()) {
 +            this.a(channelhandlercontext, object);
 +        }
      }
