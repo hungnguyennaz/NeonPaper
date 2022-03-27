@@ -1,0 +1,63 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: moo <48740106+moom0o@users.noreply.github.com>
+Date: Tue, 29 Jun 2021 14:49:19 -0400
+Subject: [PATCH] (Papaya) Prevent chunks from loading option
+
+Original code by moom0o, licensed under GPLv3
+Yoi can find the original code on https://github.com/moom0o/Papaya
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index dc3922216920984d75aea7d2e05296cd4d7fee59..b924fae7426db3a7ffcc1d700cb5458f0b4f51e0 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -176,7 +176,12 @@ public class NeonPaperConfig {
+ 
+     public static Boolean preventChunksWorldBorder = true;
+     private static void preventChunksWorldBorder() {
+-        preventChunksWorldBorder = getBoolean("settings.worldborder.prevent-chunks-generating-past-worldborder-lag-exploit", true);
++        preventChunksWorldBorder = getBoolean("settings.chunks.worldborder.prevent-chunks-generating-past-worldborder-lag-exploit", preventChunksWorldBorder);
++    }
++
++    public static Boolean preventChunks = false;
++    private static void preventChunks() {
++        preventChunks = getBoolean("settings.chunks.prevent-chunks-from-loading", preventChunks);
+     }
+ 
+ }
+diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
+index 93725a4001d51013b1e7a1cac08edbf0ce1e9efc..7fb65d47dc0c5cb8642b94eaec99a82cd4cb0261 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunk.java
++++ b/src/main/java/net/minecraft/server/PlayerChunk.java
+@@ -66,19 +66,21 @@ public class PlayerChunk {
+             PlayerChunk.a.debug("Failed to add player. {} already is in chunk {}, {}", entityplayer, Integer.valueOf(this.location.x), Integer.valueOf(this.location.z));
+         } else {
+             if(!NeonPaperConfig.preventChunksWorldBorder || (location.x <= 1875000 && location.z <= 1875000 && location.x >= -1875001 && location.z >= -1875001)) { // Papaya - Patch retarded lag exploit at world border
+-                if (this.c.isEmpty()) {
+-                    this.i = this.playerChunkMap.getWorld().getTime();
+-                }
++                if(!NeonPaperConfig.preventChunks){
++                    if (this.c.isEmpty()) {
++                        this.i = this.playerChunkMap.getWorld().getTime();
++                    }
+ 
+-                this.c.add(entityplayer);
+-                // CraftBukkit start - use async chunk io
+-                // if (this.done) {
+-                //     this.sendChunk(entityplayer);
+-                // }
+-                if (this.done) {
+-                    this.sendChunk(entityplayer);
++                    this.c.add(entityplayer);
++                    // CraftBukkit start - use async chunk io
++                    // if (this.done) {
++                    //     this.sendChunk(entityplayer);
++                    // }
++                    if (this.done) {
++                        this.sendChunk(entityplayer);
++                    }
++                    // CraftBukkit end
+                 }
+-                // CraftBukkit end
+             }
+         }
+     }

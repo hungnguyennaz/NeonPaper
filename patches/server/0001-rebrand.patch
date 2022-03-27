@@ -88,9 +88,18 @@ index cb833d15b3ae128b005c9dd042dacfe8a8323fdd..4d34f1aceac210faeb42a1aca64f2f32
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/dev/pomf/dionysus/DionysusConfig.java b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
-index f078bbd9c9dd1447129c8d95314a514d8969471d..0c38bdfbc9a5c763f2f1fa9ca517b46740b8b9ac 100644
+index f078bbd9c9dd1447129c8d95314a514d8969471d..3be4a315467218cf0f6f08669d15ca92c119e678 100644
 --- a/src/main/java/dev/pomf/dionysus/DionysusConfig.java
 +++ b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
+@@ -72,7 +72,7 @@ public class DionysusConfig {
+ 
+     public static void registerCommands() {
+         for (Map.Entry<String, Command> entry : commands.entrySet()) {
+-            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Dionysus", entry.getValue());
++            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "NeonPaper", entry.getValue());
+         }
+     }
+ 
 @@ -211,7 +211,7 @@ public class DionysusConfig {
          }
      }
