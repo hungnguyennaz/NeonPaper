@@ -15,7 +15,6 @@ A Paper 1.12.2 fork that aims to the Performance and Exploits fixes
 
 - Fast from Dionysus
 - Exploits fixes from Papaya and FlamePaper
-- SecureSeed 
 - No jdks limit
 
 
