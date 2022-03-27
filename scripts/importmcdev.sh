@@ -93,7 +93,7 @@ for f in $files; do
 done
 
 #import LootTableInfo
-import IChatBaseComponent
+#import IChatBaseComponent
 ########################################################
 ########################################################
 ########################################################
