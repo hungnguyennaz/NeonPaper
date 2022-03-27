@@ -7,7 +7,7 @@
 set -e
 basedir="$(cd "$1" && pwd -P)"
 workdir="$basedir/Dionysus/Paper/work"
-localworkdir="$basedir/Dionysus/work"
+localworkdir="$basedir/work"
 mcver=$(cat "$workdir/BuildData/info.json" | grep minecraftVersion | cut -d '"' -f 4)
 paperjar="$basedir/NeonPaper-Server/target/neonpaper-$mcver.jar"
 vanillajar="$workdir/Minecraft/$mcver/$mcver.jar"
