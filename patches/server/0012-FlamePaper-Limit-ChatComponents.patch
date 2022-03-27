@@ -7,7 +7,7 @@ Original code by 2lstudios-mc, licensed under MIT
 You can find the original code on https://github.com/2lstudios-mc/FlamePaper
 
 diff --git a/src/main/java/net/minecraft/server/IChatBaseComponent.java b/src/main/java/net/minecraft/server/IChatBaseComponent.java
-index 22418b953533472bbf86ab686022287d6ad7bddd..9a1401ac944c362a2a91f9ff4c9717c5e969a053 100644
+index 22418b953533472bbf86ab686022287d6ad7bddd..1ce63c04002c4aa06721bbc86a096ce41aa88905 100644
 --- a/src/main/java/net/minecraft/server/IChatBaseComponent.java
 +++ b/src/main/java/net/minecraft/server/IChatBaseComponent.java
 @@ -41,17 +41,31 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
@@ -15,7 +15,7 @@ index 22418b953533472bbf86ab686022287d6ad7bddd..9a1401ac944c362a2a91f9ff4c9717c5
          public ChatSerializer() {}
  
 -        public IChatBaseComponent a(JsonElement jsonelement, Type type, JsonDeserializationContext jsondeserializationcontext) throws JsonParseException {
-+        public IChatBaseComponent a(int extraCount, JsonElement jsonelement, Type type, JsonDeserializationContext jsondeserializationcontext) throws JsonParseException {
++        public IChatBaseComponent a(int extraCount, String lastElement, JsonElement jsonelement, Type type, JsonDeserializationContext jsondeserializationcontext) throws JsonParseException {
              if (jsonelement.isJsonPrimitive()) {
                  return new ChatComponentText(jsonelement.getAsString());
              } else if (!jsonelement.isJsonObject()) {
