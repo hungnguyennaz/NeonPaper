@@ -7,7 +7,7 @@ Original code by 2lstudios-mc, licensed under MIT
 You can find the original code on https://github.com/2lstudios-mc/FlamePaper
 
 diff --git a/src/main/java/net/minecraft/server/IChatBaseComponent.java b/src/main/java/net/minecraft/server/IChatBaseComponent.java
-index 22418b953533472bbf86ab686022287d6ad7bddd..327b1caeca6fe126f1705336dda06ad6f9fefcd1 100644
+index 22418b953533472bbf86ab686022287d6ad7bddd..9a1401ac944c362a2a91f9ff4c9717c5e969a053 100644
 --- a/src/main/java/net/minecraft/server/IChatBaseComponent.java
 +++ b/src/main/java/net/minecraft/server/IChatBaseComponent.java
 @@ -41,17 +41,31 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
@@ -106,12 +106,3 @@ index 22418b953533472bbf86ab686022287d6ad7bddd..327b1caeca6fe126f1705336dda06ad6
                      }
                  }
  
-@@ -234,7 +285,7 @@ public interface IChatBaseComponent extends Iterable<IChatBaseComponent> {
-         }
- 
-         public Object deserialize(JsonElement jsonelement, Type type, JsonDeserializationContext jsondeserializationcontext) throws JsonParseException {
--            return this.a(jsonelement, type, jsondeserializationcontext);
-+            return this.a(0, jsonelement, type, jsondeserializationcontext);
-         }
- 
-         static {
