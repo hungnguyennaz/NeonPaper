@@ -7,7 +7,7 @@
 set -e
 basedir="$(cd "$1" && pwd -P)"
 workdir="$basedir/Dionysus/Paper/work"
-localworkdir="$basedir/work"
+localworkdir="$basedir/Dionysus/work"
 mcver=$(cat "$workdir/BuildData/info.json" | grep minecraftVersion | cut -d '"' -f 4)
 paperjar="$basedir/NeonPaper-Server/target/neonpaper-$mcver.jar"
 vanillajar="$workdir/Minecraft/$mcver/$mcver.jar"
@@ -18,8 +18,6 @@ vanillajar="$workdir/Minecraft/$mcver/$mcver.jar"
 )
 cp "$localworkdir/Paperclip/assembly/target/paperclip-${mcver}.jar" "$basedir/neonpaper-paperclip.jar"
 
-echo ""
-echo ""
 echo ""
 echo "Build success!"
 echo "Copied final jar to $(cd "$basedir" && pwd -P)/neonpaper-paperclip.jar"
