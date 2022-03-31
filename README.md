@@ -25,3 +25,6 @@ A Paper 1.12.2 fork that aims to the Performance and Exploits fixes
 - AnarchyExploitFixes
 - SpeedLimit
 - Panilla
+
+## Downloads
+- Actions tab
