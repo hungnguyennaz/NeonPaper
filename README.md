@@ -1,8 +1,9 @@
 
 # NeonPaper
 
-A Paper 1.12.2 fork that aims to the Performance and Exploits fixes
+A Paper 1.12.2 fork that aims to the Performance and some Exploits fixes
 
+## This didn't patch some packet exploits so please install the recommends
 
 ## Forked from Dionysus, patches are from
 
