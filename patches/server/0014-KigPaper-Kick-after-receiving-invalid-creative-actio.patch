@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: RoccoDev <hey@rocco.dev>
+Date: Mon, 26 Apr 2021 09:50:16 +0200
+Subject: [PATCH] (KigPaper) Kick after receiving invalid creative action
+ packet
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 25fda12b3ecca985182a1e4113401afb48688d74..309eddf3d000faea5fd63618f545b212717aa832 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -2217,6 +2217,8 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+                     entityitem.j();
+                 }
+             }
++        } else {
++            disconnect("Not in creative mode"); // KigPaper
+         }
+ 
+     }

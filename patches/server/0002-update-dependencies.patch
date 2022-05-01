@@ -5,7 +5,7 @@ Subject: [PATCH] update dependencies
 
 
 diff --git a/pom.xml b/pom.xml
-index db6e4ece69bc21f12575912caf9b847e0d061344..a1cbe6c9314bbd2c65123fd04cb35bb27267affb 100644
+index db6e4ece69bc21f12575912caf9b847e0d061344..68b251d82122204fd190cf86313c1f2898d9c07c 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -19,7 +19,7 @@
@@ -22,7 +22,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..a1cbe6c9314bbd2c65123fd04cb35bb2
              <groupId>io.netty</groupId>
              <artifactId>netty-all</artifactId>
 -            <version>4.1.72.Final</version>
-+            <version>4.1.75.Final</version>
++            <version>4.1.76.Final</version>
              <scope>compile</scope>
          </dependency>
          <dependency>
@@ -59,6 +59,15 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..a1cbe6c9314bbd2c65123fd04cb35bb2
              <scope>test</scope>
          </dependency>
          <dependency>
+@@ -139,7 +139,7 @@
+         <dependency>
+             <groupId>com.velocitypowered</groupId>
+             <artifactId>velocity-native</artifactId>
+-            <version>1.1.0-SNAPSHOT</version>
++            <version>1.1.10-SNAPSHOT</version>
+             <scope>compile</scope>
+         </dependency>
+     </dependencies>
 @@ -187,7 +187,7 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
@@ -73,7 +82,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..a1cbe6c9314bbd2c65123fd04cb35bb2
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-shade-plugin</artifactId>
 -                <version>3.1.0</version>
-+                <version>3.2.4</version>
++                <version>3.3.0</version>
                  <executions>
                      <execution>
                          <phase>package</phase>
@@ -94,7 +103,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..a1cbe6c9314bbd2c65123fd04cb35bb2
 -                        <version>2.8.1</version>
 +                        <groupId>io.github.edwgiz</groupId>
 +                        <artifactId>log4j-maven-shade-plugin-extensions</artifactId>
-+                        <version>2.17.1</version>
++                        <version>2.17.2</version>
                      </dependency>
                  </dependencies>
              </plugin>

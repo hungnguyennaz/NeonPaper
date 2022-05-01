@@ -7,7 +7,7 @@ Subject: [PATCH] pom changes
 - bump dependencies
 
 diff --git a/pom.xml b/pom.xml
-index e32fd4014b3174678b775f76a643ab4e7338a3a8..94a65c9ca0bd7c05c54799520291dd06dfbdefac 100644
+index e32fd4014b3174678b775f76a643ab4e7338a3a8..30ceef8a0c1bd414ccf4134f7ffbad99a4dd2d9d 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -4,18 +4,18 @@
@@ -35,7 +35,15 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..94a65c9ca0bd7c05c54799520291dd06
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
-@@ -98,13 +98,13 @@
+@@ -91,20 +91,20 @@
+         <dependency>
+             <groupId>com.google.guava</groupId>
+             <artifactId>guava</artifactId>
+-            <version>21.0</version>
++            <version>23.6.1-jre</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- bundled with Minecraft, should be kept in sync -->
          <dependency>
              <groupId>com.google.code.gson</groupId>
              <artifactId>gson</artifactId>
@@ -74,13 +82,13 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..94a65c9ca0bd7c05c54799520291dd06
              <groupId>org.ow2.asm</groupId>
              <artifactId>asm</artifactId>
 -            <version>6.1.1</version>
-+            <version>9.2</version>
++            <version>9.3</version>
          </dependency>
          <dependency>
              <groupId>org.ow2.asm</groupId>
              <artifactId>asm-commons</artifactId>
 -            <version>6.1.1</version>
-+            <version>9.2</version>
++            <version>9.3</version>
          </dependency>
      </dependencies>
  
@@ -89,7 +97,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..94a65c9ca0bd7c05c54799520291dd06
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-compiler-plugin</artifactId>
 -                <version>3.7.0</version>
-+                <version>3.9.0</version>
++                <version>3.10.1</version>
                  <dependencies>
                      <!-- we need our custom version as it fixes some bugs on case sensitive file systems -->
                      <dependency>
@@ -104,7 +112,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..94a65c9ca0bd7c05c54799520291dd06
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-shade-plugin</artifactId>
 -                <version>3.1.0</version>
-+                <version>3.2.4</version>
++                <version>3.3.0</version>
                  <executions>
                      <execution>
                          <phase>package</phase>

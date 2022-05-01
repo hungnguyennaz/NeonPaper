@@ -1,0 +1,91 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Techcable <Techcable@techcable.net>
+Date: Fri, 18 Mar 2016 13:56:01 -0700
+Subject: [PATCH] (TacoSpigot) Better AsyncCatcher
+
+Async catching for PlayerChunkMap
+
+diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+index 99652ae3ed9fffe9a2a8310465b948d504b0595f..727cf319fa8ce8f5e0b968353fd1f6131329eef9 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
++++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+@@ -19,6 +19,9 @@ import javax.annotation.Nullable;
+ // CraftBukkit start
+ import java.util.LinkedList;
+ // CraftBukkit end
++// TacoSpigot start
++import org.spigotmc.AsyncCatcher;
++// TacoSpigot end
+ 
+ public class PlayerChunkMap {
+ 
+@@ -41,12 +44,14 @@ public class PlayerChunkMap {
+         }
+     };
+     private final WorldServer world;
+-    private final List<EntityPlayer> managedPlayers = Lists.newArrayList();
++    // TacoSpigot start - catch async access
++    private final List<EntityPlayer> managedPlayers = AsyncCatcher.catchAsyncUsage(Lists.newArrayList(), "list access PlayerChunkMap.managedPlayers");
+     private final Long2ObjectMap<PlayerChunk> e = new Long2ObjectOpenHashMap(4096);
+-    private final Set<PlayerChunk> f = Sets.newHashSet();
+-    private final List<PlayerChunk> g = Lists.newLinkedList();
+-    private final List<PlayerChunk> h = Lists.newLinkedList();
+-    private final List<PlayerChunk> i = Lists.newArrayList();
++    private final Set<PlayerChunk> f = AsyncCatcher.catchAsyncUsage(Sets.newHashSet(), "set access PlayerChunkMap.f");
++    private final List<PlayerChunk> g = AsyncCatcher.catchAsyncUsage(Lists.newLinkedList(), "list access PlayerChunkMap.g");
++    private final List<PlayerChunk> h = AsyncCatcher.catchAsyncUsage(Lists.newLinkedList(), "list access PlayerChunkMap.h");
++    private final List<PlayerChunk> i = AsyncCatcher.catchAsyncUsage(Lists.newArrayList(), "list access PlayerChunkMap.i");
++    // TacoSpigot end
+     private int j;public int getViewDistance() { return j; } // Paper OBFHELPER
+     private long k;
+     private boolean l = true;
+diff --git a/src/main/java/org/spigotmc/AsyncCatcher.java b/src/main/java/org/spigotmc/AsyncCatcher.java
+index e44c2301654b8ce8e7a1135ac739bc267048a967..26a72ada6f803c835d3bca83eb4666e4e5159896 100644
+--- a/src/main/java/org/spigotmc/AsyncCatcher.java
++++ b/src/main/java/org/spigotmc/AsyncCatcher.java
+@@ -1,6 +1,13 @@
+ package org.spigotmc;
+ 
+ import net.minecraft.server.MinecraftServer;
++// TacoSpigot start
++import java.util.List;
++import java.util.Set;
++
++import com.google.common.collect.ForwardingList;
++import com.google.common.collect.ForwardingSet;
++// TacoSpigot end
+ 
+ public class AsyncCatcher
+ {
+@@ -12,7 +19,30 @@ public class AsyncCatcher
+     {
+         if ( enabled && Thread.currentThread() != MinecraftServer.getServer().primaryThread )
+         {
+-            throw new IllegalStateException( "Asynchronous " + reason + "!" );
++            MinecraftServer.LOGGER.warn(reason + " called async on " + Thread.currentThread().getName()); // TacoSpigot - log
++            throw new IllegalStateException( "Asynchronous " + reason + " on thread " + Thread.currentThread().getName() + "!" ); // TacoSpigot - give thread
+         }
+     }
++
++    // TacoSpigot start - safety wrappers
++    public static <E> List<E> catchAsyncUsage(List<E> list, String msg) {
++        return new ForwardingList<E>() {
++            @Override
++            protected List<E> delegate() {
++                AsyncCatcher.catchOp(msg);
++                return list;
++            }
++        };
++    }
++
++    public static <E> Set<E> catchAsyncUsage(Set<E> set, String msg) {
++        return new ForwardingSet<E>() {
++            @Override
++            protected Set<E> delegate() {
++                AsyncCatcher.catchOp(msg);
++                return set;
++            }
++        };
++    }
++    // TacoSpigot end
+ }
