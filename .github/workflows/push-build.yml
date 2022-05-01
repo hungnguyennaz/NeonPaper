@@ -3,27 +3,32 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [8]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
-      with:
-        java-version: ${{ matrix.java }}
-    - uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven-
-    - name: Patch NeonPaper
-      run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        git submodule update --init --recursive
-        ./neonpaper jar
-    - uses: actions/upload-artifact@v2
-      with:
-        name: NeonPaper-JDK${{ matrix.java }}
-        path: neonpaper-paperclip.jar
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: paperclip
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git submodule update --init --recursive
+          ./neonpaper jar
+      - name: release info
+        id: relInfo
+        run: |
+          echo "::set-output name=date::$(date +'%H:%M %m/%d/%Y')"
+          echo "::set-output name=shortHash::$(git rev-parse --short HEAD)"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "1.12.2"
+          prerelease: false
+          title: "NeonPaper ${{ steps.relInfo.outputs.date }} ${{ steps.relInfo.outputs.shortHash }}"
+          files: ./neonpaper-paperclip.jar
