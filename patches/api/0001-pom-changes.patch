@@ -7,7 +7,7 @@ Subject: [PATCH] pom changes
 - bump dependencies
 
 diff --git a/pom.xml b/pom.xml
-index e32fd4014b3174678b775f76a643ab4e7338a3a8..30ceef8a0c1bd414ccf4134f7ffbad99a4dd2d9d 100644
+index e32fd4014b3174678b775f76a643ab4e7338a3a8..c22f3acb0ea5d20fed84ecdb1e83d6a0e33ec845 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -4,18 +4,18 @@
@@ -35,15 +35,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..30ceef8a0c1bd414ccf4134f7ffbad99
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
-@@ -91,20 +91,20 @@
-         <dependency>
-             <groupId>com.google.guava</groupId>
-             <artifactId>guava</artifactId>
--            <version>21.0</version>
-+            <version>23.6.1-jre</version>
-             <scope>compile</scope>
-         </dependency>
-         <!-- bundled with Minecraft, should be kept in sync -->
+@@ -98,13 +98,13 @@
          <dependency>
              <groupId>com.google.code.gson</groupId>
              <artifactId>gson</artifactId>

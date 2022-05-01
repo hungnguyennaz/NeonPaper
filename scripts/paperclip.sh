@@ -14,7 +14,7 @@ vanillajar="$workdir/Minecraft/$mcver/$mcver.jar"
 
 (
     cd "$localworkdir/Paperclip"
-    mvn clean package "-Dmcver=$mcver" "-Dpaperjar=$paperjar" "-Dvanillajar=$vanillajar"
+    mvn --no-transfer-progress clean package "-Dmcver=$mcver" "-Dpaperjar=$paperjar" "-Dvanillajar=$vanillajar"
 )
 cp "$localworkdir/Paperclip/assembly/target/paperclip-${mcver}.jar" "$basedir/neonpaper-paperclip.jar"
 
