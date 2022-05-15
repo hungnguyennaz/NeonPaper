@@ -7,7 +7,7 @@ Subject: [PATCH] pom changes
 - bump dependencies
 
 diff --git a/pom.xml b/pom.xml
-index e32fd4014b3174678b775f76a643ab4e7338a3a8..c22f3acb0ea5d20fed84ecdb1e83d6a0e33ec845 100644
+index e32fd4014b3174678b775f76a643ab4e7338a3a8..c3fefb8d958b1584b0fb730a32ada9ff56f79b90 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -4,18 +4,18 @@
@@ -35,7 +35,15 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..c22f3acb0ea5d20fed84ecdb1e83d6a0
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
-@@ -98,13 +98,13 @@
+@@ -91,20 +91,20 @@
+         <dependency>
+             <groupId>com.google.guava</groupId>
+             <artifactId>guava</artifactId>
+-            <version>21.0</version>
++            <version>23.6.1-jre</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- bundled with Minecraft, should be kept in sync -->
          <dependency>
              <groupId>com.google.code.gson</groupId>
              <artifactId>gson</artifactId>
@@ -104,7 +112,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..c22f3acb0ea5d20fed84ecdb1e83d6a0
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-shade-plugin</artifactId>
 -                <version>3.1.0</version>
-+                <version>3.3.0</version>
++                <version>3.2.4</version>
                  <executions>
                      <execution>
                          <phase>package</phase>

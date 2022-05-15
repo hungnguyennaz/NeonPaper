@@ -3,9 +3,10 @@ From: KurumiFake <kurumiisshidowife@gmail.com>
 Date: Thu, 24 Mar 2022 16:42:18 +0000
 Subject: [PATCH] update dependencies
 
+note: maven-shade-plugin 3.3.0+ is broken with this so wlep dont
 
 diff --git a/pom.xml b/pom.xml
-index db6e4ece69bc21f12575912caf9b847e0d061344..68b251d82122204fd190cf86313c1f2898d9c07c 100644
+index db6e4ece69bc21f12575912caf9b847e0d061344..051ccd547f73ee0ffb45acbce2b15f29fcc2c9b2 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -19,7 +19,7 @@
@@ -22,7 +23,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..68b251d82122204fd190cf86313c1f28
              <groupId>io.netty</groupId>
              <artifactId>netty-all</artifactId>
 -            <version>4.1.72.Final</version>
-+            <version>4.1.76.Final</version>
++            <version>4.1.77.Final</version>
              <scope>compile</scope>
          </dependency>
          <dependency>
@@ -40,7 +41,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..68b251d82122204fd190cf86313c1f28
              <groupId>it.unimi.dsi</groupId>
              <artifactId>dsiutils</artifactId>
 -            <version>2.6.17</version>
-+            <version>2.7.0</version>
++            <version>2.7.1</version>
          </dependency>
  
          <dependency>
@@ -82,7 +83,7 @@ index db6e4ece69bc21f12575912caf9b847e0d061344..68b251d82122204fd190cf86313c1f28
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-shade-plugin</artifactId>
 -                <version>3.1.0</version>
-+                <version>3.3.0</version>
++                <version>3.2.4</version>
                  <executions>
                      <execution>
                          <phase>package</phase>
