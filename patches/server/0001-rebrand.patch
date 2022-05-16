@@ -88,7 +88,7 @@ index cb833d15b3ae128b005c9dd042dacfe8a8323fdd..4d34f1aceac210faeb42a1aca64f2f32
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/dev/pomf/dionysus/DionysusConfig.java b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
-index f078bbd9c9dd1447129c8d95314a514d8969471d..0c38bdfbc9a5c763f2f1fa9ca517b46740b8b9ac 100644
+index 8e0597a01e7f6b7926ac0632a6e6449d69d38a86..f1dff9aa6ea740eb8c923de0d1d26b75ba1b8a65 100644
 --- a/src/main/java/dev/pomf/dionysus/DionysusConfig.java
 +++ b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
 @@ -211,7 +211,7 @@ public class DionysusConfig {
