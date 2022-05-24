@@ -29,3 +29,6 @@ A Paper 1.12.2 fork that aims to the Performance and some Exploits fixes
 
 ## Downloads
 - Actions tab
+
+## Warning!
+- This is another skidded projects, please don't take it seriously.
