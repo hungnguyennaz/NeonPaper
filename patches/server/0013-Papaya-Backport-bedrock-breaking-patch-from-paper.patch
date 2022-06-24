@@ -5,7 +5,7 @@ Subject: [PATCH] (Papaya) Backport bedrock breaking patch from paper
 
 
 diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
-index d78b9a9de3cd302bfdcd454c1be19abd70a674f4..a5db73bd66b50c6fcc0bfc0f9fde1679fb02420f 100644
+index e600b50cc5748e5124c07b5c480e63f011f3a9db..210f67115233368fcd8f5ab3244650d5f63574c4 100644
 --- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 @@ -178,4 +178,9 @@ public class NeonPaperConfig {
