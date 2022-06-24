@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: KurumiFake <kurumiisshidowife@gmail.com>
+Date: Fri, 18 Mar 2022 02:49:12 +0000
+Subject: [PATCH] (Lazinity) Configurable NBT read limiter
+
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index 29e098898efcb426fc7ace2cdb433c7ad1969718..b69575edbeb0a9307cd5fa0f67df3ea0cc54c80e 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -174,4 +174,8 @@ public class NeonPaperConfig {
+         return config.getString(path, config.getString(path));
+     }
+ 
++    public static long nbtReadLimit;
++    private static void nbtReadLimitC() {
++        nbtReadLimit = getLong("nbt-read-limit", 512000L); // would recommend a lower val :shrug:
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/PacketDataSerializer.java b/src/main/java/net/minecraft/server/PacketDataSerializer.java
+index c1273e988e6a46c20eca54530f928404c03ad947..ddc667c4838087b3c80fad72728ecb3425fa62b2 100644
+--- a/src/main/java/net/minecraft/server/PacketDataSerializer.java
++++ b/src/main/java/net/minecraft/server/PacketDataSerializer.java
+@@ -228,7 +228,7 @@ public class PacketDataSerializer extends ByteBuf {
+             this.readerIndex(i);
+ 
+             try {
+-                return NBTCompressedStreamTools.a((DataInput) (new ByteBufInputStream(this)), new NBTReadLimiter(2097152L));
++                return NBTCompressedStreamTools.a((DataInput) (new ByteBufInputStream(this)), new NBTReadLimiter(me.hungnguyennaz.neonpaper.NeonPaperConfig.nbtReadLimit)); // Lazinity
+             } catch (IOException ioexception) {
+                 throw new EncoderException(ioexception);
+             }

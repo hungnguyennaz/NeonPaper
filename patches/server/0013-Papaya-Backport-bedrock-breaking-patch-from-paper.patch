@@ -1,0 +1,115 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: moo <48740106+moom0o@users.noreply.github.com>
+Date: Thu, 8 Jul 2021 05:24:55 -0400
+Subject: [PATCH] (Papaya) Backport bedrock breaking patch from paper
+
+
+diff --git a/src/main/java/net/minecraft/server/Block.java b/src/main/java/net/minecraft/server/Block.java
+index 8c1d78e38c63018a8109cf950797a51fd814c75d..376e06276f6efc1caa4801f84763652afca9678d 100644
+--- a/src/main/java/net/minecraft/server/Block.java
++++ b/src/main/java/net/minecraft/server/Block.java
+@@ -46,6 +46,14 @@ public class Block {
+         }
+         return timing;
+     }
++    public final boolean isDestroyable() {
++        return me.hungnguyennaz.neonpaper.NeonPaperConfig.allowBlockPermanentBreakingExploits ||
++                this != Blocks.BEDROCK &&
++                this != Blocks.END_PORTAL_FRAME &&
++                this != Blocks.END_PORTAL &&
++                this != Blocks.END_GATEWAY &&
++                this != Blocks.PISTON_EXTENSION; // try to prevent creation of headless pistons
++    }
+     // Paper end
+     // Dionysus start
+     public static Random SHARED_RANDOM = new XoShiRo256PlusPlusRandom() {
+@@ -561,7 +569,7 @@ public class Block {
+ 
+     @Deprecated
+     public EnumPistonReaction h(IBlockData iblockdata) {
+-        return this.material.getPushReaction();
++        return !blockData.isDestroyable() ? EnumPistonReaction.BLOCK : this.material.getPushReaction(); // Paper
+     }
+ 
+     public void fallOn(World world, BlockPosition blockposition, Entity entity, float f) {
+diff --git a/src/main/java/net/minecraft/server/BlockPiston.java b/src/main/java/net/minecraft/server/BlockPiston.java
+index 0f90172fa015e74beb563d840f770e2bd9cbf434..8c8045f90839d55f37ddb8035087da855085607c 100644
+--- a/src/main/java/net/minecraft/server/BlockPiston.java
++++ b/src/main/java/net/minecraft/server/BlockPiston.java
+@@ -168,7 +168,12 @@ public class BlockPiston extends BlockDirectional {
+ 
+     public boolean a(IBlockData iblockdata, World world, BlockPosition blockposition, int i, int j) {
+         EnumDirection enumdirection = (EnumDirection) iblockdata.get(BlockPiston.FACING);
+-
++        // Paper start - prevent retracting when we're facing the wrong way (we were replaced before retraction could occur)
++        EnumDirection directionQueuedAs = EnumDirection.fromType1(j & 7); // Paper - copied from below
++        if (!me.hungnguyennaz.neonpaper.NeonPaperConfig.allowBlockPermanentBreakingExploits && enumdirection != directionQueuedAs) {
++            return false;
++        }
++        // Paper end - prevent retracting when we're facing the wrong way
+         if (!world.isClientSide) {
+             boolean flag = this.a(world, blockposition, enumdirection);
+ 
+@@ -221,7 +226,12 @@ public class BlockPiston extends BlockDirectional {
+                     this.a(world, blockposition, enumdirection, false);
+                 }
+             } else {
+-                world.setAir(blockposition.shift(enumdirection));
++                // Paper start - fix headless pistons breaking blocks
++                BlockPosition headPos = blockposition.shift(enumdirection);
++                if (me.hungnguyennaz.neonpaper.NeonPaperConfig.allowBlockPermanentBreakingExploits || world.getType(headPos) == Blocks.PISTON_HEAD.getBlockData().set(FACING, enumdirection)) { // double check to make sure we're not a headless piston.
++                    world.setAir(headPos, false);
++                }
++                // Paper end - fix headless pistons breaking blocks
+             }
+ 
+             world.a((EntityHuman) null, blockposition, SoundEffects.ft, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.15F + 0.6F);
+diff --git a/src/main/java/net/minecraft/server/Explosion.java b/src/main/java/net/minecraft/server/Explosion.java
+index 9d1258194066d64b29fc6b01160603029feda56c..46f2acc16d860eeb6e31e91c45c46d1c0433b9ee 100644
+--- a/src/main/java/net/minecraft/server/Explosion.java
++++ b/src/main/java/net/minecraft/server/Explosion.java
+@@ -226,6 +226,7 @@ public class Explosion {
+     private float traverseBlock(float strength, int blockX, int blockY, int blockZ, LongOpenHashSet touched) {
+         cachedPos.setValues(blockX, blockY, blockZ);
+         IBlockData iblockdata = this.world.getType(cachedPos);
++        if (!iblockdata.isDestroyable()) continue; // Paper
+ 
+         // Early-exit if the y-coordinate is out of bounds.
+         if (cachedPos.isInvalidYLocation()) {
+@@ -375,7 +376,7 @@ public class Explosion {
+                     this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
+                 }
+ 
+-                if (iblockdata.getMaterial() != Material.AIR) {
++                if (iblockdata.getMaterial() != Material.AIR && iblockdata.isDestroyable()) {
+                     if (block.a(this)) {
+                         // CraftBukkit - add yield
+                         block.dropNaturally(this.world, blockposition, this.world.getType(blockposition), yield, 0);
+diff --git a/src/main/java/net/minecraft/server/IBlockData.java b/src/main/java/net/minecraft/server/IBlockData.java
+index 6881d3dcb5e17fa2ac89dd1b1f85129cc85bba18..1fdd4d5ac91bd1c9ec5835d1631bd61f34aa7fcc 100644
+--- a/src/main/java/net/minecraft/server/IBlockData.java
++++ b/src/main/java/net/minecraft/server/IBlockData.java
+@@ -16,4 +16,8 @@ public interface IBlockData extends IBlockPhysics, IBlockProperties {
+     ImmutableMap<IBlockState<?>, Comparable<?>> t();
+ 
+     Block getBlock();
++
++    default boolean isDestroyable(){
++        return getBlock().isDestroyable();
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
+index d26e0396088ef1553bb05572344614b575a17174..5a2e404ca72ca97b202bccf7f25d0b4ef6ef7c1e 100644
+--- a/src/main/java/net/minecraft/server/World.java
++++ b/src/main/java/net/minecraft/server/World.java
+@@ -361,6 +361,10 @@ public abstract class World implements IBlockAccess {
+     public boolean setTypeAndData(BlockPosition blockposition, IBlockData iblockdata, int i) {
+         // CraftBukkit start - tree generation
+         if (this.captureTreeGeneration) {
++            // Paper start
++            IBlockData type = getType(blockposition);
++            if (!type.isDestroyable()) return false;
++            // Paper end
+             BlockState blockstate = null;
+             Iterator<BlockState> it = capturedBlockStates.iterator();
+             while (it.hasNext()) {
