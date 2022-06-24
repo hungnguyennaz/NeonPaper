@@ -79,18 +79,10 @@ index 0f90172fa015e74beb563d840f770e2bd9cbf434..8c8045f90839d55f37ddb8035087da85
  
              world.a((EntityHuman) null, blockposition, SoundEffects.ft, SoundCategory.BLOCKS, 0.5F, world.random.nextFloat() * 0.15F + 0.6F);
 diff --git a/src/main/java/net/minecraft/server/Explosion.java b/src/main/java/net/minecraft/server/Explosion.java
-index 9d1258194066d64b29fc6b01160603029feda56c..46f2acc16d860eeb6e31e91c45c46d1c0433b9ee 100644
+index 9d1258194066d64b29fc6b01160603029feda56c..171bd60f428976d1850900136e6ac0a41ec0b938 100644
 --- a/src/main/java/net/minecraft/server/Explosion.java
 +++ b/src/main/java/net/minecraft/server/Explosion.java
-@@ -226,6 +226,7 @@ public class Explosion {
-     private float traverseBlock(float strength, int blockX, int blockY, int blockZ, LongOpenHashSet touched) {
-         cachedPos.setValues(blockX, blockY, blockZ);
-         IBlockData iblockdata = this.world.getType(cachedPos);
-+        if (!iblockdata.isDestroyable()) continue; // Paper
- 
-         // Early-exit if the y-coordinate is out of bounds.
-         if (cachedPos.isInvalidYLocation()) {
-@@ -375,7 +376,7 @@ public class Explosion {
+@@ -375,7 +375,7 @@ public class Explosion {
                      this.world.addParticle(EnumParticle.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
                  }
  
