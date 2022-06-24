@@ -71,7 +71,7 @@ index 0000000000000000000000000000000000000000..ac5b87edd1c918a0f088bde4d0e98b1f
 +}
 diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..29e098898efcb426fc7ace2cdb433c7ad1969718
+index 0000000000000000000000000000000000000000..3ee6540a36aec971950038414620bf97e70eb685
 --- /dev/null
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 @@ -0,0 +1,177 @@
@@ -231,9 +231,9 @@ index 0000000000000000000000000000000000000000..29e098898efcb426fc7ace2cdb433c7a
 +        return config.getDouble(path, config.getDouble(path));
 +    }
 +
-+    private static float getFloat(String path, float def) {
-+        // TODO: Figure out why getFloat() always returns the default value.
-+        return (float) getDouble(path, def);
++    private static long getLong(final String path, final long dfl) {
++        LazinityConfig.config.addDefault(path, Long.valueOf(dfl));
++        return LazinityConfig.config.getLong(path, dfl);
 +    }
 +
 +    private static int getInt(String path, int def) {

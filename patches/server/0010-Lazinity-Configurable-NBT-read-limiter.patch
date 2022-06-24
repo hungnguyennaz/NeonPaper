@@ -5,7 +5,7 @@ Subject: [PATCH] (Lazinity) Configurable NBT read limiter
 
 
 diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
-index 29e098898efcb426fc7ace2cdb433c7ad1969718..b69575edbeb0a9307cd5fa0f67df3ea0cc54c80e 100644
+index 3ee6540a36aec971950038414620bf97e70eb685..d78b9a9de3cd302bfdcd454c1be19abd70a674f4 100644
 --- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 @@ -174,4 +174,8 @@ public class NeonPaperConfig {

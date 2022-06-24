@@ -4,6 +4,20 @@ Date: Thu, 8 Jul 2021 05:24:55 -0400
 Subject: [PATCH] (Papaya) Backport bedrock breaking patch from paper
 
 
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index d78b9a9de3cd302bfdcd454c1be19abd70a674f4..a5db73bd66b50c6fcc0bfc0f9fde1679fb02420f 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -178,4 +178,9 @@ public class NeonPaperConfig {
+     private static void nbtReadLimitC() {
+         nbtReadLimit = getLong("nbt-read-limit", 512000L); // would recommend a lower val :shrug:
+     }
++
++    public static boolean allowBlockPermanentBreakingExploits = false;
++    private static void allowBlockPermanentBreakingExploits() {
++        allowBlockPermanentBreakingExploits = getBoolean("allow-permanent-block-break-exploits", allowBlockPermanentBreakingExploits);
++    }
+ }
 diff --git a/src/main/java/net/minecraft/server/Block.java b/src/main/java/net/minecraft/server/Block.java
 index 8c1d78e38c63018a8109cf950797a51fd814c75d..376e06276f6efc1caa4801f84763652afca9678d 100644
 --- a/src/main/java/net/minecraft/server/Block.java
