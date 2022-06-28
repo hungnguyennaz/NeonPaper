@@ -1,29 +1,32 @@
-name: Build PR
-on: [pull_request]
+name: Build main
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [8]
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
-      with:
-        java-version: ${{ matrix.java }}
-    - uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven-
-    - name: Patch NeonPaper
-      run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        git submodule update --init --recursive
-        ./neonpaper jar
-    - uses: actions/upload-artifact@v2
-      with:
-        name: NeonPaper-PR${{ github.event.pull_request.number }}-JDK${{ matrix.java }}
-        path: neonpaper-paperclip.jar
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 8
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: patch
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git submodule update --init --recursive
+          ./neonpaper patch
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: paperclip
+        run: ./neonpaper jar fast
+      - uses: actions/upload-artifact@v2
+        with:
+          name: NeonPaper-PR${{ github.event.pull_request.number }}-JDK17
+          path: neonpaper-paperclip.jar

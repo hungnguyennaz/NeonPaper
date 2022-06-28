@@ -14,12 +14,18 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
-      - name: paperclip
+      - name: patch
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
           git submodule update --init --recursive
-          ./neonpaper jar
+          ./neonpaper patch
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: paperclip
+        run: ./neonpaper jar fast
       - name: release info
         id: relInfo
         run: |

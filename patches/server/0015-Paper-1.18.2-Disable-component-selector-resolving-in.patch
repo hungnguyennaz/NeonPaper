@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Nassim Jahnke <jahnke.nassim@gmail.com>
+Date: Thu, 2 Jun 2022 20:35:58 +0200
+Subject: [PATCH] (Paper-1.18.2) Disable component selector resolving in books
+ by default
+
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index 210f67115233368fcd8f5ab3244650d5f63574c4..18a6e83e84ff0a3d4794f0bff33a6fda9d26f0d7 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -183,4 +183,9 @@ public class NeonPaperConfig {
+     private static void allowBlockPermanentBreakingExploits() {
+         allowBlockPermanentBreakingExploits = getBoolean("allow-permanent-block-break-exploits", allowBlockPermanentBreakingExploits);
+     }
++
++    public static boolean resolveSelectorsInBooks;
++    private static void resolveSelectorsInBooks() {
++        resolveSelectorsInBooks = getBoolean("resolve-selectors-in-books", false);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/ItemWrittenBook.java b/src/main/java/net/minecraft/server/ItemWrittenBook.java
+index 0e91a152e6fbbc5558bf917c0fbd3dff3d595523..9214f13a4919429504aaae2f23fe57eca7b0f306 100644
+--- a/src/main/java/net/minecraft/server/ItemWrittenBook.java
++++ b/src/main/java/net/minecraft/server/ItemWrittenBook.java
+@@ -51,7 +51,7 @@ public class ItemWrittenBook extends Item {
+         if (itemstack.getTag() != null) {
+             NBTTagCompound nbttagcompound = itemstack.getTag();
+ 
+-            if (!nbttagcompound.getBoolean("resolved")) {
++            if (me.hungnguyennaz.neonpaper.NeonPaperConfig.resolveSelectorsInBooks && !nbttagcompound.getBoolean("resolved")) {
+                 nbttagcompound.setBoolean("resolved", true);
+                 if (b(nbttagcompound)) {
+                     NBTTagList nbttaglist = nbttagcompound.getList("pages", 8);
