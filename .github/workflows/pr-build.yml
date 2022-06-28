@@ -1,5 +1,5 @@
-name: Build main
-on: [push]
+name: Build PR
+on: [pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
