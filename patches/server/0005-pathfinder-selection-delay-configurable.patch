@@ -7,10 +7,10 @@ Original code by moom0o, licensed under GPLv3
 Yoi can find the original code on https://github.com/moom0o/Papaya
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 539ae6aeb5e92f55b981d9cf3f11bf2f1816852f..56aaa0291214c65fac3a0f0ee5b9893917a8b4aa 100644
+index aa259316a2684015c9ee3d7bb423af0040e8006f..e93fc1af8094173ecae944b610dc4fd5f986ee64 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -334,4 +334,10 @@ public class PaperConfig {
+@@ -343,4 +343,10 @@ public class PaperConfig {
              maxBookTotalSizeMultiplier = 0.98D;
          }
      }

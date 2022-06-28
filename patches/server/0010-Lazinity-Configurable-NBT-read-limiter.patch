@@ -18,7 +18,7 @@ index ce84697c32facc620e4562ce7f65b6a9a668f07a..e600b50cc5748e5124c07b5c480e63f0
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/PacketDataSerializer.java b/src/main/java/net/minecraft/server/PacketDataSerializer.java
-index c1273e988e6a46c20eca54530f928404c03ad947..ddc667c4838087b3c80fad72728ecb3425fa62b2 100644
+index 54b518dcd422e842af128aeacee8670d1ea3d7ee..3c60f6ecdaa870c79ce573e5e7e36e4d754e7989 100644
 --- a/src/main/java/net/minecraft/server/PacketDataSerializer.java
 +++ b/src/main/java/net/minecraft/server/PacketDataSerializer.java
 @@ -228,7 +228,7 @@ public class PacketDataSerializer extends ByteBuf {

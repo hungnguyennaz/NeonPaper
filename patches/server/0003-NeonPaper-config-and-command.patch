@@ -253,12 +253,12 @@ index 0000000000000000000000000000000000000000..ce84697c32facc620e4562ce7f65b6a9
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 9779311d21d2df5db7828e470303f0250ef9fa0a..cf4ec9ea40afeea4dfd7ad2c03cba57ebd522c44 100644
+index 9d451ff304fc2eb7398811564ad7956682f28bf5..bf50ce29109755e8af34f0592e56f0d82a9527af 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -205,6 +205,10 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
-             dev.pomf.dionysus.DionysusConfig.init((File) options.valueOf("dionysus-settings"));
-             dev.pomf.dionysus.DionysusConfig.registerCommands();
+             dev.pomf.dionysus.DionysusConfig.load();
+             dev.pomf.dionysus.DionysusCommand.init();
              // Dionysus end
 +            // NeonPaper start
 +            me.hungnguyennaz.neonpaper.NeonPaperConfig.init((File) options.valueOf("neonpaper-settings"));
@@ -268,13 +268,13 @@ index 9779311d21d2df5db7828e470303f0250ef9fa0a..cf4ec9ea40afeea4dfd7ad2c03cba57e
              DedicatedServer.LOGGER.info("Generating keypair");
              this.a(MinecraftEncryption.b());
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8fb7d1d5ee5621cd0a626f5ba620af919bffb4f0..6e98357dc8b6809d89a0ce7fa0142a486d90c625 100644
+index b13602370c2f81fca6908647514e380a647203a5..8343331dc65b4af6db0db58283e87456ed0fe245 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -744,6 +744,7 @@ public final class CraftServer implements Server {
+@@ -750,6 +750,7 @@ public final class CraftServer implements Server {
+ 
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
-         dev.pomf.dionysus.DionysusConfig.init((File) console.options.valueOf("dionysus-settings")); // Dionysus
 +        me.hungnguyennaz.neonpaper.NeonPaperConfig.init((File) console.options.valueOf("neonpaper-settings")); // NeonPaper
          for (WorldServer world : console.worlds) {
              world.worldData.setDifficulty(difficulty);

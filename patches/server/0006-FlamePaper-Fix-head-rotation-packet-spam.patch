@@ -7,10 +7,10 @@ Original code by 2lstudios-mc, licensed under MIT
 You can find the original code on https://github.com/2lstudios-mc/FlamePaper
 
 diff --git a/src/main/java/net/minecraft/server/EntityTrackerEntry.java b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
-index efc4c79ab717effe2995e155dd29827ff68b8e5e..01f2aa0c4b0ffb4439aef65acf320bd31f4e1beb 100644
+index 52ddc347a645c8293bee39348303ad05dc5f7793..fb194996d52479350949e8eac3f64f70b86f0fea 100644
 --- a/src/main/java/net/minecraft/server/EntityTrackerEntry.java
 +++ b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
-@@ -422,8 +422,10 @@ public class EntityTrackerEntry {
+@@ -424,8 +424,10 @@ public class EntityTrackerEntry {
                      }
  
                      // CraftBukkit start - Fix for nonsensical head yaw

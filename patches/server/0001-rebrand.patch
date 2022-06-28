@@ -5,7 +5,7 @@ Subject: [PATCH] rebrand
 
 
 diff --git a/pom.xml b/pom.xml
-index 2084c876ba6076dc46e5fdf06366cab1c4e525a1..ea36b3e67c30bad33a2f588d4eb1425848389471 100644
+index 400777d29f82b5cac0053bdc2b25ec92cacddd5d..b00ffc94b30f9bce2fdba188b82df08f1a3c82af 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,12 +1,12 @@
@@ -25,7 +25,7 @@ index 2084c876ba6076dc46e5fdf06366cab1c4e525a1..ea36b3e67c30bad33a2f588d4eb14258
  
      <properties>
          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-@@ -23,8 +23,8 @@
+@@ -24,8 +24,8 @@
      </properties>
  
      <parent>
@@ -36,7 +36,7 @@ index 2084c876ba6076dc46e5fdf06366cab1c4e525a1..ea36b3e67c30bad33a2f588d4eb14258
          <version>dev-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
-@@ -38,8 +38,8 @@
+@@ -39,8 +39,8 @@
              <scope>compile</scope>
          </dependency>
          <dependency>
@@ -47,7 +47,7 @@ index 2084c876ba6076dc46e5fdf06366cab1c4e525a1..ea36b3e67c30bad33a2f588d4eb14258
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
-@@ -170,7 +170,7 @@
+@@ -210,7 +210,7 @@
  
      <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
      <build>
@@ -56,7 +56,7 @@ index 2084c876ba6076dc46e5fdf06366cab1c4e525a1..ea36b3e67c30bad33a2f588d4eb14258
          <defaultGoal>install</defaultGoal> <!-- Paper -->
          <plugins>
              <plugin>
-@@ -178,7 +178,7 @@
+@@ -218,7 +218,7 @@
                  <artifactId>gitdescribe-maven-plugin</artifactId>
                  <version>1.3</version>
                  <configuration>
@@ -88,20 +88,20 @@ index cb833d15b3ae128b005c9dd042dacfe8a8323fdd..4d34f1aceac210faeb42a1aca64f2f32
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/dev/pomf/dionysus/DionysusConfig.java b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
-index 1e2bb1c5095a1d99419c324286494df26f38453d..e38930656bbf3c7b86973b7b0289bc51e7c49c97 100644
+index f0c7aa5b259f45d7c25be40eaa8687817ec8cb58..d975bb176eee4c6796d011ef005ee22dff3df298 100644
 --- a/src/main/java/dev/pomf/dionysus/DionysusConfig.java
 +++ b/src/main/java/dev/pomf/dionysus/DionysusConfig.java
-@@ -211,7 +211,7 @@ public class DionysusConfig {
+@@ -206,7 +206,7 @@ public class DionysusConfig {
          }
      }
  
 -    public static String serverModName = "Dionysus";
 +    public static String serverModName = "NeonPaper";
+ 
      private static void serverModName() {
          serverModName = getString("settings.server-mod-name", serverModName);
-     }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fc969ddeee05779293a7dc0377b66db17ff01017..8fb7d1d5ee5621cd0a626f5ba620af919bffb4f0 100644
+index ef5cdbdb231396db5fda9ab2ddeb0e63ba3dcf9b..b13602370c2f81fca6908647514e380a647203a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -140,7 +140,7 @@ import javax.annotation.Nonnull; // Paper

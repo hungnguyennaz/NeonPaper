@@ -7,7 +7,7 @@ Subject: [PATCH] pom changes
 - bump dependencies
 
 diff --git a/pom.xml b/pom.xml
-index e32fd4014b3174678b775f76a643ab4e7338a3a8..c3fefb8d958b1584b0fb730a32ada9ff56f79b90 100644
+index 759b9678314efae85c012938834c558dafe70002..5cca8283179288641ed7012f6a5f509007ac973d 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -4,18 +4,18 @@
@@ -35,7 +35,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..c3fefb8d958b1584b0fb730a32ada9ff
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
-@@ -91,20 +91,20 @@
+@@ -92,14 +92,14 @@
          <dependency>
              <groupId>com.google.guava</groupId>
              <artifactId>guava</artifactId>
@@ -52,47 +52,7 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..c3fefb8d958b1584b0fb730a32ada9ff
              <scope>compile</scope>
          </dependency>
          <dependency>
-             <groupId>org.yaml</groupId>
-             <artifactId>snakeyaml</artifactId>
--            <version>1.19</version>
-+            <version>1.30</version>
-             <scope>compile</scope>
-         </dependency>
-         <dependency>
-@@ -119,7 +119,7 @@
-         <dependency>
-             <groupId>org.slf4j</groupId>
-             <artifactId>slf4j-api</artifactId>
--            <version>1.7.25</version>
-+            <version>1.7.36</version>
-             <scope>compile</scope>
-         </dependency>
- 
-@@ -127,7 +127,7 @@
-         <dependency>
-             <groupId>junit</groupId>
-             <artifactId>junit</artifactId>
--            <version>4.12</version>
-+            <version>4.13.2</version>
-             <scope>test</scope>
-         </dependency>
-         <dependency>
-@@ -140,12 +140,12 @@
-         <dependency>
-             <groupId>org.ow2.asm</groupId>
-             <artifactId>asm</artifactId>
--            <version>6.1.1</version>
-+            <version>9.3</version>
-         </dependency>
-         <dependency>
-             <groupId>org.ow2.asm</groupId>
-             <artifactId>asm-commons</artifactId>
--            <version>6.1.1</version>
-+            <version>9.3</version>
-         </dependency>
-     </dependencies>
- 
-@@ -155,20 +155,20 @@
+@@ -162,13 +162,13 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-compiler-plugin</artifactId>
@@ -107,7 +67,8 @@ index e32fd4014b3174678b775f76a643ab4e7338a3a8..c3fefb8d958b1584b0fb730a32ada9ff
 +                        <version>2.8.5-spigotmc</version>
                      </dependency>
                  </dependencies>
-             </plugin>
+                 <configuration>
+@@ -178,7 +178,7 @@
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-shade-plugin</artifactId>

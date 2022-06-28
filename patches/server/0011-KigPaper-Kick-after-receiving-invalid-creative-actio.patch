@@ -6,7 +6,7 @@ Subject: [PATCH] (KigPaper) Kick after receiving invalid creative action
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 25fda12b3ecca985182a1e4113401afb48688d74..309eddf3d000faea5fd63618f545b212717aa832 100644
+index 7561307aef37a0eee09f6460c938439a09545fc0..25c3ff1ce163a8887ccde81b1b9c4e1a8c6ac7ba 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2217,6 +2217,8 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
