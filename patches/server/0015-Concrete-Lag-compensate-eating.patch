@@ -1,0 +1,98 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Spottedleaf <Spottedleaf@users.noreply.github.com>
+Date: Wed, 9 Oct 2019 04:38:54 -0700
+Subject: [PATCH] (Concrete) Lag compensate eating
+
+When the server is lagging, players will wait longer when eating.
+Change to also use a time check instead if it passes.
+
+This can be controlled by config, and is enabled by default
+
+Original code from https://github.com/Tuinity/Tuinity
+Licensed under LGPL-3.0
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index 18a6e83e84ff0a3d4794f0bff33a6fda9d26f0d7..bad1f0f65690848c3f74d829fb4f8fe5d94bb47a 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -188,4 +188,9 @@ public class NeonPaperConfig {
+     private static void resolveSelectorsInBooks() {
+         resolveSelectorsInBooks = getBoolean("resolve-selectors-in-books", false);
+     }
++
++    public static boolean lagCompensateEating;
++    private static void lagCompensateEating() {
++        lagCompensateEating = getBoolean("lag-compensate-eating", true);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
+index c6644f21e3b037e6044ac0c8e1a28b79df4aee08..756977a7bf5f4071ee0a0012bc352cc0d61016f1 100644
+--- a/src/main/java/net/minecraft/server/EntityLiving.java
++++ b/src/main/java/net/minecraft/server/EntityLiving.java
+@@ -106,7 +106,7 @@ public abstract class EntityLiving extends Entity {
+     private int bD;
+     private float bE;
+     protected ItemStack activeItem;
+-    protected int bp;
++    protected int bp; protected final int getEatTimeTicks() { return this.bp; }  protected final void setEatTimeTicks(int value) { this.bp = value; }/* Concrete - OBFHELPER */
+     protected int bq;
+     private BlockPosition bF;
+     private DamageSource bG;
+@@ -2395,6 +2395,8 @@ public abstract class EntityLiving extends Entity {
+         return (((Byte) this.datawatcher.get(EntityLiving.at)).byteValue() & 2) > 0 ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
+     }
+ 
++    protected long eatStartTime;
++    protected int totalEatTimeTicks;
+     protected void cI() {
+         if (this.isHandRaised()) {
+             ItemStack itemstack = this.b(this.cH());
+@@ -2404,7 +2406,13 @@ public abstract class EntityLiving extends Entity {
+                     this.b(this.activeItem, 5);
+                 }
+ 
+-                if (--this.bp == 0 && !this.world.isClientSide) {
++                /* Concrete start - lag compensate eating */
++                // we add 2 to the expected time to avoid lag compensating when we don't need to
++                boolean shouldLagCompensate
++                        = me.hungnguyennaz.neonpaper.NeonPaperConfig.lagCompensateEating && this.activeItem.getItem().isFood() && this.eatStartTime != -1 && (System.nanoTime() - this.eatStartTime) > ((2 + this.totalEatTimeTicks) * 50 * (1000 * 1000));
++                if ((--this.bp == 0 || shouldLagCompensate) && !this.world.isClientSide)
++                    this.setEatTimeTicks(0);
++                    /* Concrete end - lag compensate eating */
+                     this.v();
+                 }
+             } else {
+@@ -2419,7 +2427,10 @@ public abstract class EntityLiving extends Entity {
+ 
+         if (!itemstack.isEmpty() && !this.isHandRaised()) {
+             this.activeItem = itemstack;
+-            this.bp = itemstack.m();
++            /* Concrete start - lag compensate eating */
++            this.bp = this.totalEatTimeTicks = itemstack.m();
++            this.eatStartTime = System.nanoTime();
++            /* Concrete end - lag compensate eating */
+             if (!this.world.isClientSide) {
+                 int i = 1;
+ 
+@@ -2443,7 +2454,9 @@ public abstract class EntityLiving extends Entity {
+                 }
+             } else if (!this.isHandRaised() && !this.activeItem.isEmpty()) {
+                 this.activeItem = ItemStack.a;
+-                this.bp = 0;
++                this.bp = 0; /* Concrete - diff on change */
++                this.totalEatTimeTicks = 0; /* Concrete - lag compensate eating */
++                this.eatStartTime = -1L; /* Concrete - lag compensate eating */
+             }
+         }
+ 
+@@ -2551,7 +2564,9 @@ public abstract class EntityLiving extends Entity {
+         }
+ 
+         this.activeItem = ItemStack.a;
+-        this.bp = 0;
++        this.bp = 0; /* Concrete - diff on change */
++        this.totalEatTimeTicks = 0; /* Concrete - lag compensate eating */
++        this.eatStartTime = -1L; /* Concrete - lag compensate eating */
+     }
+ 
+     public boolean isBlocking() {
