@@ -5,7 +5,7 @@ Subject: [PATCH] ver command stuff
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/VersionCommand.java b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..f509909c127ebb92490f990fa5242bce2b9d792e 100644
+index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..803d8d5cff63df86022210ade0c52314db29cf42 100644
 --- a/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 @@ -49,7 +49,14 @@ public class VersionCommand extends BukkitCommand {
@@ -14,13 +14,13 @@ index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..f509909c127ebb92490f990fa5242bce
          if (args.length == 0) {
 -            sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
 +            //sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
-+            sender.sendMessage(translate(
-+                    "&8/&7&m------------------------------------------------&8\\",
-+                    "&fThis &eserver&f is running &bNeonPaper",
-+                    "&fVersion&7: &b" + Bukkit.getVersion(),
-+                    "&fAPI&7: &e" + Bukkit.getBukkitVersion(),
-+                    "&8\\&7&m-----------------------------------------------&8/"
-+            ));
++            sender.sendMessage(
++                    "§l§3/----------------------------------------------\\",
++                    "§r§5This server is running §aNeonPaper",
++                    "§r§5Version: §r" + Bukkit.getVersion(),
++                    "§r§5API: §r" + Bukkit.getBukkitVersion(),
++                    "§l§3\\----------------------------------------------/"
++            );
              tellHistory(sender); // Paper
              sendVersion(sender); // Paper - We'll say when, thanks
          } else {
