@@ -5,26 +5,10 @@ Subject: [PATCH] ver command stuff
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/VersionCommand.java b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..803d8d5cff63df86022210ade0c52314db29cf42 100644
+index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..bb07c67a02b519022055034e4cdfb906119339f4 100644
 --- a/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-@@ -49,7 +49,14 @@ public class VersionCommand extends BukkitCommand {
-         if (!testPermission(sender)) return true;
- 
-         if (args.length == 0) {
--            sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
-+            //sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
-+            sender.sendMessage(
-+                    "§l§3/----------------------------------------------\\",
-+                    "§r§5This server is running §aNeonPaper",
-+                    "§r§5Version: §r" + Bukkit.getVersion(),
-+                    "§r§5API: §r" + Bukkit.getBukkitVersion(),
-+                    "§l§3\\----------------------------------------------/"
-+            );
-             tellHistory(sender); // Paper
-             sendVersion(sender); // Paper - We'll say when, thanks
-         } else {
-@@ -209,8 +216,8 @@ public class VersionCommand extends BukkitCommand {
+@@ -209,8 +209,8 @@ public class VersionCommand extends BukkitCommand {
      private void obtainVersion() {
          String version = Bukkit.getVersion();
          if (version == null) version = "Custom";
@@ -35,7 +19,7 @@ index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..803d8d5cff63df86022210ade0c52314
              int distance = getDistance(null, parts[0]);
              switch (distance) {
                  case -1:
-@@ -261,13 +268,13 @@ public class VersionCommand extends BukkitCommand {
+@@ -261,13 +261,13 @@ public class VersionCommand extends BukkitCommand {
  
      // Paper start
      private static int getDistance(String repo, String verInfo) {
@@ -54,7 +38,7 @@ index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..803d8d5cff63df86022210ade0c52314
              /*
              BufferedReader reader = Resources.asCharSource(
                      new URL("https://hub.spigotmc.org/stash/rest/api/1.0/projects/SPIGOT/repos/" + repo + "/commits?since=" + URLEncoder.encode(hash, "UTF-8") + "&withCounts=true"),
-@@ -285,7 +292,7 @@ public class VersionCommand extends BukkitCommand {
+@@ -285,7 +285,7 @@ public class VersionCommand extends BukkitCommand {
              */
      }
  
@@ -63,7 +47,7 @@ index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..803d8d5cff63df86022210ade0c52314
          try {
              BufferedReader reader = Resources.asCharSource(
                      new URL("https://ci.destroystokyo.com/job/Paper/lastSuccessfulBuild/buildNumber"), // Paper
-@@ -304,10 +311,10 @@ public class VersionCommand extends BukkitCommand {
+@@ -304,10 +304,10 @@ public class VersionCommand extends BukkitCommand {
              e.printStackTrace();
              return -1;
          }
