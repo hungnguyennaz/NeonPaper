@@ -40,5 +40,6 @@ corresponding patch file.
 
 ## Server that using NeonPaper
 - [7B27T.ORG](https://7b27t.org)
+- [6G6S.ORG](https://ds.6g6s.org)
 
 Icon by [Flaticon](https://www.flaticon.com)
