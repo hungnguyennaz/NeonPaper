@@ -38,7 +38,7 @@ To create one, just add a commit to either repo and run `./neonpaper rb`, and a
 patch will be placed in the patches folder. Modifying commits will also modify its
 corresponding patch file.
 
-## Server that using NeonPaper
+## Servers that using NeonPaper
 - [7B27T.ORG](https://7b27t.org)
 - [6G6S.ORG](https://ds.6g6s.org)
 
