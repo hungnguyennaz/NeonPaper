@@ -39,6 +39,6 @@ patch will be placed in the patches folder. Modifying commits will also modify i
 corresponding patch file.
 
 ## Server that using NeonPaper
-- 7B27T.ORG
+- [7B27T.ORG](https://7b27t.org)
 
 Icon by [Flaticon](https://www.flaticon.com)
