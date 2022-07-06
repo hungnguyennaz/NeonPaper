@@ -1,8 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: hungnguyennaz <no-reply@github.com>
-Date: Wed, 6 Jul 2022 00:37:09 +0700
-Subject: [PATCH] Reaper Fix MC-103516
+From: ruViolence <78062896+ruViolence@users.noreply.github.com>
+Date: Wed, 1 Jun 2022 09:05:15 +0500
+Subject: [PATCH] (Reaper) fix: MC-103516
 
+https://bugs.mojang.com/browse/MC-103516
+
+Original code from https://github.com/ruViolence/Reaper
+Licensed under GPL-3.0
 
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
 index 5a2e404ca72ca97b202bccf7f25d0b4ef6ef7c1e..548d99e43b55a4efec7143da7c0d9270a9eb09c5 100644

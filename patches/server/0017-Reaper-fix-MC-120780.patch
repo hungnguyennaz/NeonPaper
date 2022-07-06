@@ -1,8 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: hungnguyennaz <no-reply@github.com>
-Date: Wed, 6 Jul 2022 00:38:20 +0700
-Subject: [PATCH] Reaper Fix MC-120780
+From: ruViolence <78062896+ruViolence@users.noreply.github.com>
+Date: Wed, 1 Jun 2022 07:38:51 +0500
+Subject: [PATCH] (Reaper) fix: MC-120780
 
+https://bugs.mojang.com/browse/MC-120780
+
+Original code from https://github.com/ruViolence/Reaper
+Licensed under GPL-3.0
 
 diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
 index b40c136fae6e3e5b8bd706cfaeea2e5aedad2b05..963784cbbc512761f67b685f26e0e5fab48abd27 100644

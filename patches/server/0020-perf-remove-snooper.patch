@@ -1,11 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: hungnguyennaz <no-reply@github.com>
-Date: Wed, 6 Jul 2022 01:01:49 +0700
-Subject: [PATCH] Reaper Remove Snooper
+From: ruViolence <78062896+ruViolence@users.noreply.github.com>
+Date: Fri, 27 May 2022 10:37:34 +0500
+Subject: [PATCH] perf: remove snooper
 
+I don't think Mojang is interested in data about the custom Bukkit server.
 
 diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
-index 15760d19346d27bdca27096edb272cbde6c55713..9e596fddfd8e0a0874f06d8e8788e793cfa68ef4 100644
+index 067ec8bccbd3ee6724f64ff07090ee6042ac1c5d..ccaadc62903045c193e8a370b61f9b55b01f5b97 100644
 --- a/src/main/java/net/minecraft/server/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/DedicatedServer.java
 @@ -286,7 +286,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer

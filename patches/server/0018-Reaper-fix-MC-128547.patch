@@ -1,11 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: hungnguyennaz <no-reply@github.com>
-Date: Wed, 6 Jul 2022 00:43:09 +0700
-Subject: [PATCH] Reaper Fix MC-128547
+From: ruViolence <78062896+ruViolence@users.noreply.github.com>
+Date: Fri, 27 May 2022 21:22:05 +0500
+Subject: [PATCH] (Reaper) fix: MC-128547
 
+https://bugs.mojang.com/browse/MC-128547
+
+Original code from https://github.com/ruViolence/Reaper
+Licensed under GPL-3.0
 
 diff --git a/src/main/java/net/minecraft/server/EnchantmentManager.java b/src/main/java/net/minecraft/server/EnchantmentManager.java
-index f714dc32645a80c120af5e7c867452dd6a9ef5d0..899ccffb78249b8d62bb35e014a46403ee4ceed2 100644
+index f714dc32645a80c120af5e7c867452dd6a9ef5d0..c74d00b14b2362c82da3a3def9204dac75afbacf 100644
 --- a/src/main/java/net/minecraft/server/EnchantmentManager.java
 +++ b/src/main/java/net/minecraft/server/EnchantmentManager.java
 @@ -114,6 +114,7 @@ public class EnchantmentManager {
@@ -16,11 +20,10 @@ index f714dc32645a80c120af5e7c867452dd6a9ef5d0..899ccffb78249b8d62bb35e014a46403
          return EnchantmentManager.a.a;
      }
  
-@@ -140,7 +141,10 @@ public class EnchantmentManager {
-         if (entity instanceof EntityHuman) {
+@@ -141,6 +142,10 @@ public class EnchantmentManager {
              a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.c, entityliving.getItemInMainHand());
          }
--
+ 
 +        // Reaper start - Fix MC-128547
 +        EnchantmentManager.c.b = null;
 +        EnchantmentManager.c.a = null;
@@ -28,11 +31,10 @@ index f714dc32645a80c120af5e7c867452dd6a9ef5d0..899ccffb78249b8d62bb35e014a46403
      }
  
      public static void b(EntityLiving entityliving, Entity entity) {
-@@ -153,7 +157,10 @@ public class EnchantmentManager {
-         if (entityliving instanceof EntityHuman) {
+@@ -154,6 +159,10 @@ public class EnchantmentManager {
              a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.d, entityliving.getItemInMainHand());
          }
--
+ 
 +        // Reaper start - Fix MC-128547
 +        EnchantmentManager.d.b = null;
 +        EnchantmentManager.d.a = null;
