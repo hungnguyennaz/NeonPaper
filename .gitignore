@@ -26,6 +26,9 @@ current-dionysus
 .idea/
 out/
 
+# VSCode 
+.vscode/
+
 # Maven
 target/
 

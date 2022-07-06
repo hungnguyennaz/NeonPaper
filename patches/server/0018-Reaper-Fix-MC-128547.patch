@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: hungnguyennaz <no-reply@github.com>
+Date: Wed, 6 Jul 2022 00:43:09 +0700
+Subject: [PATCH] Reaper Fix MC-128547
+
+
+diff --git a/src/main/java/net/minecraft/server/EnchantmentManager.java b/src/main/java/net/minecraft/server/EnchantmentManager.java
+index f714dc32645a80c120af5e7c867452dd6a9ef5d0..899ccffb78249b8d62bb35e014a46403ee4ceed2 100644
+--- a/src/main/java/net/minecraft/server/EnchantmentManager.java
++++ b/src/main/java/net/minecraft/server/EnchantmentManager.java
+@@ -114,6 +114,7 @@ public class EnchantmentManager {
+         EnchantmentManager.a.a = 0;
+         EnchantmentManager.a.b = damagesource;
+         a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.a, iterable);
++        EnchantmentManager.a.b = null; // Reaper - Fix MC-128547
+         return EnchantmentManager.a.a;
+     }
+ 
+@@ -140,7 +141,10 @@ public class EnchantmentManager {
+         if (entity instanceof EntityHuman) {
+             a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.c, entityliving.getItemInMainHand());
+         }
+-
++        // Reaper start - Fix MC-128547
++        EnchantmentManager.c.b = null;
++        EnchantmentManager.c.a = null;
++        // Reaper end
+     }
+ 
+     public static void b(EntityLiving entityliving, Entity entity) {
+@@ -153,7 +157,10 @@ public class EnchantmentManager {
+         if (entityliving instanceof EntityHuman) {
+             a((EnchantmentManager.EnchantmentModifier) EnchantmentManager.d, entityliving.getItemInMainHand());
+         }
+-
++        // Reaper start - Fix MC-128547
++        EnchantmentManager.d.b = null;
++        EnchantmentManager.d.a = null;
++        // Reaper end
+     }
+ 
+     public static int a(Enchantment enchantment, EntityLiving entityliving) {
