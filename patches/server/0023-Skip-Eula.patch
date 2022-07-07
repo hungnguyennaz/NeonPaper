@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Thu, 7 Jul 2022 02:01:29 +0500
+Subject: [PATCH] Do-not-load-chunks-for-light-checks
+
+
+diff --git a/src/main/java/net/minecraft/server/DedicatedServer.java b/src/main/java/net/minecraft/server/DedicatedServer.java
+index ccaadc62903045c193e8a370b61f9b55b01f5b97..9c4cd73c068c3976b1a5d2ea584a5a8393b02dde 100644
+--- a/src/main/java/net/minecraft/server/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/DedicatedServer.java
+@@ -39,7 +39,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+     public final RemoteControlCommandListener remoteControlCommandListener = new RemoteControlCommandListener(this);
+     private RemoteControlListener p;
+     public PropertyManager propertyManager;
+-    private EULA r;
+     private boolean generateStructures;
+     private EnumGamemode t;
+     private boolean u;
+@@ -140,19 +139,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+ 
+         DedicatedServer.LOGGER.info("Loading properties");
+         this.propertyManager = new PropertyManager(this.options); // CraftBukkit - CLI argument support
+-        this.r = new EULA(new File("eula.txt"));
+-        // Spigot Start
+-        boolean eulaAgreed = Boolean.getBoolean( "com.mojang.eula.agree" );
+-        if ( eulaAgreed )
+-        {
+-            System.err.println( "You have used the Spigot command line EULA agreement flag." );
+-            System.err.println( "By using this setting you are indicating your agreement to Mojang's EULA (https://account.mojang.com/documents/minecraft_eula)." );
+-            System.err.println( "If you do not agree to the above EULA please stop your server and remove this flag immediately." );
+-        }
+-        // Spigot End
+-        if (!this.r.a() && !eulaAgreed) { // Spigot
+-            DedicatedServer.LOGGER.info("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
+-            this.r.b();
++		if (false) { // NeonPaper - Skip Eula
+             return false;
+         } else {
+             if (this.R()) {
