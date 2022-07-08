@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Sat, 9 Jul 2022 02:18:13 +0500
+Subject: [PATCH] Optimize-Idle-Furnaces
+
+
+diff --git a/src/main/java/net/minecraft/server/TileEntityFurnace.java b/src/main/java/net/minecraft/server/TileEntityFurnace.java
+index 7a142810594d9bfe9f84f206ce661f8b8c138785..24db3ae2081a4eab75e18e029bee9108dcadfaea 100644
+--- a/src/main/java/net/minecraft/server/TileEntityFurnace.java
++++ b/src/main/java/net/minecraft/server/TileEntityFurnace.java
+@@ -186,7 +186,7 @@ public class TileEntityFurnace extends TileEntityContainer implements ITickable,
+                 if (!this.isBurning() && this.cookTime > 0) {
+                     this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
+                 }
+-            } else {
++            } else if(this.items[1] != null && this.items[1].getItem() != Items.BUCKET) {
+                 // CraftBukkit start - Handle multiple elapsed ticks
+                 if (this.burnTime <= 0 && this.canBurn()) { // CraftBukkit - == to <=
+                     CraftItemStack fuel = CraftItemStack.asCraftMirror(itemstack);
