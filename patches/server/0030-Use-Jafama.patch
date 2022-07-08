@@ -25,28 +25,6 @@ index c5472b50109c2efb46c896d097860e48e65356ca..04c044a7182891f0bde69d65f7448d37
          int k1 = -1;
          boolean flag1 = false;
          int l1 = 0;
-diff --git a/src/main/java/net/minecraft/server/ChunkProviderHell.java b/src/main/java/net/minecraft/server/ChunkProviderHell.java
-index 12bc10ff00eda73bcad7c6394088d84cfbc06fcf..32cc1f1b93c9e3999e317bb47954c454ddb7782d 100644
---- a/src/main/java/net/minecraft/server/ChunkProviderHell.java
-+++ b/src/main/java/net/minecraft/server/ChunkProviderHell.java
-@@ -3,6 +3,7 @@ package net.minecraft.server;
- import java.util.List;
- import java.util.Random;
- import javax.annotation.Nullable;
-+import net.jafama.FastMath;
- 
- public class ChunkProviderHell implements ChunkGenerator {
- 
-@@ -246,7 +247,8 @@ public class ChunkProviderHell implements ChunkGenerator {
-         int l1;
- 
-         for (l1 = 0; l1 < i1; ++l1) {
--            adouble1[l1] = Math.cos((double) l1 * 3.141592653589793D * 6.0D / (double) i1) * 2.0D;
-+            //adouble1[l1] = Math.cos((double) l1 * 3.141592653589793D * 6.0D / (double) i1) * 2.0D;
-+			adouble1[l1] = FastMath.cos((double) l1 * 3.141592653589793D * 6.0D / (double) i1) * 2.0D //NeonPaper 
-             double d2 = (double) l1;
- 
-             if (l1 > i1 / 2) {
 diff --git a/src/main/java/net/minecraft/server/EntityHuman.java b/src/main/java/net/minecraft/server/EntityHuman.java
 index 6c30d30ff2d7c46aa9e3e32473efc94cb243defa..776ec462790e18be092e1b7c2b42dbf12a852e2f 100644
 --- a/src/main/java/net/minecraft/server/EntityHuman.java
