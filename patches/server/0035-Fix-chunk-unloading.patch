@@ -24,7 +24,7 @@ index ca89369cec5423786e0446858301e4e6f3fe5626..2f7a7eacb096207ba6b63df175534aa4
  
      private static final Logger a = LogManager.getLogger();
 -    public final LongArraySet unloadQueue = new LongArraySet(512); // Dionysus
-+    public LongSet unloadQueue = new LongOpenHashSet(20); // NeonPaper
++    public LongSet unloadQueue = new LongOpenHashSet(512); // NeonPaper
      public final ChunkGenerator chunkGenerator;
      private final IChunkLoader chunkLoader;
      // Paper start - chunk save stats
