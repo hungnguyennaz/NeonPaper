@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Sat, 9 Jul 2022 01:21:10 +0500
+Subject: [PATCH] Fix-insane-nether-portal-lag
+
+
+diff --git a/src/main/java/net/minecraft/server/PortalTravelAgent.java b/src/main/java/net/minecraft/server/PortalTravelAgent.java
+index 42e4b2d01d1f4cb7729580daac0dc7ac34adc382..65b82d3827585163b4390589d3e0e9e8b2860ead 100644
+--- a/src/main/java/net/minecraft/server/PortalTravelAgent.java
++++ b/src/main/java/net/minecraft/server/PortalTravelAgent.java
+@@ -113,7 +113,14 @@ public class PortalTravelAgent {
+ 
+     public boolean b(Entity entity, float f) {
+         // CraftBukkit start - Modularize portal search process and entity teleportation
+-        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, world.paperConfig.portalSearchRadius); // Paper - Configurable search radius
++        // BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, world.paperConfig.portalSearchRadius); // Paper - Configurable search radius
++        // NeonPaper start
++        BlockPosition found = this.findPortal(entity.locX, entity.locY, entity.locZ, 10);
++        if (found == null) {
++            found = this.findPortal(entity.locX, entity.locY, entity.locZ, 128);
++        }
++        // NeonPaper end
++	  
+         if (found == null) {
+             return false;
+         }
