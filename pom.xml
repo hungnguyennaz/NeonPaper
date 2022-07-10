@@ -17,6 +17,11 @@
             <url>https://nexus.velocitypowered.com/repository/velocity-artifacts-snapshots/</url>
         </repository>
     </repositories>
+    <dependency>
+        <groupId>com.eatthepath</groupId>
+        <artifactId>fast-uuid</artifactId>
+        <version>0.2.0</version>
+    </dependency>
 
     <build>
         <defaultGoal>install</defaultGoal>
