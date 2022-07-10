@@ -5,10 +5,10 @@ Subject: [PATCH] Skip-updating-entity-tracker-without-Players
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c6ffd1da9b9c18a12a1e9c7bf5852c6f8b4ec8a5..15f366fb2e2af15ab944122905053366049db3b1 100644
+index 14cde8b1ac2fe991f4d721b4b178830eaec53d6f..58e3e3d067798e3dcf6a16e7d1c09cf8edbd8670 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -975,7 +975,9 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+@@ -994,7 +994,9 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
                      }
                  }
                  try { // Dionysus end - Flush consolidation
