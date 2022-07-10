@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Mon, 11 Jul 2022 01:36:22 +0500
+Subject: [PATCH] Adaptative-chunk-GC
+
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index bad1f0f65690848c3f74d829fb4f8fe5d94bb47a..e1f21fa24e214551afdf8e9eb1490906986ea08b 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -71,6 +71,7 @@ public class NeonPaperConfig {
+         }
+     }
+ 
++
+     static void readConfig(Class<?> clazz, Object instance) {
+         for (Method method : clazz.getDeclaredMethods()) {
+             if (Modifier.isPrivate(method.getModifiers())) {
+@@ -149,6 +150,11 @@ public class NeonPaperConfig {
+         return config.getBoolean(path, config.getBoolean(path));
+     }
+ 
++    public static boolean adaptativeChunkGC;
++    private static void adaptativeChunkGC() {
++        adaptativeChunkGC = getBoolean("adaptative-chunk-gc", true);
++    }
++
+     private static double getDouble(String path, double def) {
+         config.addDefault(path, def);
+         return config.getDouble(path, config.getDouble(path));
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 6274566dd3101afef4f37073a16b05c90065e835..6750a96c275c7b4399124f600b85d30c40f86392 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -1621,7 +1621,14 @@ public class CraftWorld implements World {
+     public void processChunkGC() {
+         chunkGCTickCount++;
+ 
+-        if (chunkLoadCount >= server.chunkGCLoadThresh && server.chunkGCLoadThresh > 0) {
++            // NeonPaper start - Adaptative chunk GC
++            int playerCount = getPlayers().size();
++            int viewDistance = getHandle().getServer().getViewDistance();
++            int viewChunks = ((viewDistance * 2) + 1);
++            int chunkGCLoadThreshold = me.hungnguyennaz.neonpaper.NeonPaperConfig.adaptativeChunkGC ? (world.keepSpawnInMemory ? 256 : 0) + playerCount * (viewChunks * viewChunks) : server.chunkGCLoadThresh;
++
++            if (chunkLoadCount > chunkGCLoadThreshold && chunkGCLoadThreshold > 0) {
++            // NeonPaper end - Adaptative chunk GC
+             chunkLoadCount = 0;
+         } else if (chunkGCTickCount >= server.chunkGCPeriod && server.chunkGCPeriod > 0) {
+             chunkGCTickCount = 0;
