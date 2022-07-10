@@ -4,6 +4,22 @@ Date: Sun, 10 Jul 2022 21:34:56 +0500
 Subject: [PATCH] Use-jchambers-FAST-UUID-methods
 
 
+diff --git a/pom.xml b/pom.xml
+index f88d8bda2342ecbd8d01506c322d3e696adba033..a2f5dc4692acb70b4a8ad6f849709ee711f16c55 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -184,6 +184,11 @@
+             <artifactId>zstd-jni</artifactId>
+             <version>1.5.2-3</version>
+         </dependency>
++        <dependency>
++            <groupId>com.eatthepath</groupId>
++            <artifactId>fast-uuid</artifactId>
++            <version>0.2.0</version>
++        </dependency>
+     </dependencies>
+ 
+     <repositories>
 diff --git a/src/main/java/net/minecraft/server/EntityCreature.java b/src/main/java/net/minecraft/server/EntityCreature.java
 index 9659a45efaf24fe83f0cdc12860fe1c15bff9ed4..1fda72717ee485e8de6d529e2989feda5d49863b 100644
 --- a/src/main/java/net/minecraft/server/EntityCreature.java
@@ -45,7 +61,7 @@ index a6d926e60cfef60b7020a56f50ba12c9220a6ae6..319f2dffca7503d11bfca2b70f82bf8c
      private static final Set<Block> c = Sets.newIdentityHashSet();
      private static final DataWatcherObject<Optional<IBlockData>> bx = DataWatcher.a(EntityEnderman.class, DataWatcherRegistry.g);
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index c6644f21e3b037e6044ac0c8e1a28b79df4aee08..772caf1beb3519aab7ba4549d387faef5b8846f4 100644
+index 6c59222c77fd7811a8dca26d54ed15f0184ab46f..cabcba7042dfb90ae902fe5a079109eb1c436f3b 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
 @@ -1,5 +1,6 @@
@@ -194,7 +210,7 @@ index ac161f5059a43c9b6937cf11f3cf6273472e23c0..d7337fd88c98e832bceee8003a39a7d1
                          jsonarray.add(jsonobject1);
                      }
 diff --git a/src/main/java/net/minecraft/server/UserCache.java b/src/main/java/net/minecraft/server/UserCache.java
-index 6a750c25eb8f5cefef68358135134d5831c71081..1357263dc531d9304420ffe10f578898ef7f794c 100644
+index ecc46a8486bdf5f783fd23307ea8cf8b2e77ad1b..da7a4525f611527eae1be2e60d1afa9933b91c42 100644
 --- a/src/main/java/net/minecraft/server/UserCache.java
 +++ b/src/main/java/net/minecraft/server/UserCache.java
 @@ -1,5 +1,6 @@
@@ -204,7 +220,7 @@ index 6a750c25eb8f5cefef68358135134d5831c71081..1357263dc531d9304420ffe10f578898
  import com.google.common.collect.Iterators;
  import com.google.common.collect.Lists;
  import com.google.common.collect.Maps;
-@@ -320,7 +321,7 @@ public class UserCache {
+@@ -315,7 +316,7 @@ public class UserCache {
              jsonobject.addProperty("name", usercache_usercacheentry.a().getName());
              UUID uuid = usercache_usercacheentry.a().getId();
  
@@ -213,7 +229,7 @@ index 6a750c25eb8f5cefef68358135134d5831c71081..1357263dc531d9304420ffe10f578898
              jsonobject.addProperty("expiresOn", UserCache.a.format(usercache_usercacheentry.b()));
              return jsonobject;
          }
-@@ -349,7 +350,7 @@ public class UserCache {
+@@ -344,7 +345,7 @@ public class UserCache {
                          UUID uuid;
  
                          try {
@@ -263,7 +279,7 @@ index 45217866bba8f7b8e065da7eca78776f1441dba9..65f66c65e05943b3ee1a54b7ac35392e
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ef5cdbdb231396db5fda9ab2ddeb0e63ba3dcf9b..178211eeeb1e6fa67dc5472c5f7a1c32d95c80d4 100644
+index 6e13b6d06f0f907fc8b6fb58f354897d29641979..a537b22d19f62087b7f5566d73f76dde747a4f26 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1,5 +1,6 @@
@@ -273,7 +289,7 @@ index ef5cdbdb231396db5fda9ab2ddeb0e63ba3dcf9b..178211eeeb1e6fa67dc5472c5f7a1c32
  import java.awt.image.BufferedImage;
  import java.io.File;
  import java.io.FileInputStream;
-@@ -1593,7 +1594,7 @@ public final class CraftServer implements Server {
+@@ -1594,7 +1595,7 @@ public final class CraftServer implements Server {
  
          for (String file : files) {
              try {
