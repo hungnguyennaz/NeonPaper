@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Mon, 11 Jul 2022 01:17:34 +0500
+Subject: [PATCH] Disable-startup-chunk-loading
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 58e3e3d067798e3dcf6a16e7d1c09cf8edbd8670..4747d0f4272db066b5c24cfe96cf1d61734cbfe6 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -361,17 +361,17 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+     }
+ 
+     protected void l() {
+-        boolean flag = true;
+-        boolean flag1 = true;
+-        boolean flag2 = true;
+-        boolean flag3 = true;
+-        int i = 0;
++        //boolean flag = true;
++      //  boolean flag1 = true;
++      //  boolean flag2 = true;
++      //  boolean flag3 = true;
++      //  int i = 0;
+ 
+         this.b("menu.generatingTerrain");
+-        boolean flag4 = false;
++       // boolean flag4 = false;
+ 
+         // CraftBukkit start - fire WorldLoadEvent and handle whether or not to keep the spawn in memory
+-        for (int m = 0; m < worlds.size(); m++) {
++        /*for (int m = 0; m < worlds.size(); m++) {
+             WorldServer worldserver = this.worlds.get(m);
+             MinecraftServer.LOGGER.info("Preparing start region for level " + m + " (Seed: " + worldserver.getSeed() + ")");
+ 
+@@ -400,7 +400,7 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+                 }
+             }
+         }
+-
++        */
+         for (WorldServer world : this.worlds) {
+             this.server.getPluginManager().callEvent(new org.bukkit.event.world.WorldLoadEvent(world.getWorld()));
+         }
