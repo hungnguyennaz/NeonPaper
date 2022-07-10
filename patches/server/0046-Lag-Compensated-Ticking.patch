@@ -14,7 +14,7 @@ index e1f21fa24e214551afdf8e9eb1490906986ea08b..f35bfccc837961ed5390db7f73fb0fac
      }
 +    public static boolean lagCompensateTicking;
 +    private static void lagCompensateTicking() {
-+        lagCompensateEating = getBoolean("lag-compensate-ticking", true);
++        lagCompensateTicking = getBoolean("lag-compensate-ticking", true);
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
