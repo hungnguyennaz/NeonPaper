@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Sun, 10 Jul 2022 20:46:55 +0500
+Subject: [PATCH] Skip-updating-entity-tracker-without-Players
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index c6ffd1da9b9c18a12a1e9c7bf5852c6f8b4ec8a5..15f366fb2e2af15ab944122905053366049db3b1 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -975,7 +975,9 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+                     }
+                 }
+                 try { // Dionysus end - Flush consolidation
+-                worldserver.getTracker().updatePlayers();
++                if (this.getPlayerList().getPlayerCount() != 0) { // NeonPaper
++                    worldserver.getTracker().updatePlayers();
++                }
+                 // Dionysus start - Flush consolidation
+                 } finally {
+                     for (net.minecraft.server.PlayerConnection playerConnection : disabledFlushes) {
