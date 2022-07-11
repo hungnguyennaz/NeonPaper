@@ -1,0 +1,188 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Tue, 12 Jul 2022 04:27:55 +0500
+Subject: [PATCH] PlayerChunkMap-Security
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+index 9d836e7e12284c1c2bf72f4cc5b4c17802425835..4a8b34ace1f12d5c780e53b9510bc0aca5a139ef 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
++++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+@@ -17,11 +17,14 @@ import java.util.Set;
+ import javax.annotation.Nullable;
+ 
+ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
++import oshi.annotation.concurrent.ThreadSafe;
+ 
+ // CraftBukkit start
+ import java.util.LinkedList;
+-// CraftBukkit end
++import java.util.concurrent.locks.ReentrantReadWriteLock;
+ 
++// CraftBukkit end
++@ThreadSafe
+ public class PlayerChunkMap {
+ 
+     private static final Predicate<EntityPlayer> a = new Predicate() {
+@@ -44,11 +47,12 @@ public class PlayerChunkMap {
+     };
+     private final WorldServer world;
+     private final List<EntityPlayer> managedPlayers = new ObjectArrayList<>(); // NeonPaper - ArrayList -> ObjectArrayList
++    private final ReentrantReadWriteLock managedPlayersLock = new ReentrantReadWriteLock(); // NeonPaper - add lock
+     private final Long2ObjectMap<PlayerChunk> e = new Long2ObjectOpenHashMap(4096);
+     private final Set<PlayerChunk> f = Sets.newHashSet();
+     private final List<PlayerChunk> g = Lists.newLinkedList();
+     private final List<PlayerChunk> h = Lists.newLinkedList();
+-    private final List<PlayerChunk> i = Lists.newArrayList();
++    private final List<PlayerChunk> i = Lists.newCopyOnWriteArrayList(); // NeonPaper - bad plugin will access this
+     private int j;public int getViewDistance() { return j; } // Paper OBFHELPER
+     private long k;
+     private boolean l = true;
+@@ -103,7 +107,7 @@ public class PlayerChunkMap {
+         };
+     }
+ 
+-    public void flush() {
++    public synchronized void flush() { // NeonPaper - synchronized
+         long i = this.world.getTime();
+         int j;
+         PlayerChunk playerchunk;
+@@ -224,6 +228,7 @@ public class PlayerChunkMap {
+             } // Paper timing
+         }
+ 
++        managedPlayersLock.readLock().lock(); // NeonPaper
+         if (this.managedPlayers.isEmpty()) {
+             try (Timing ignored = world.timings.doChunkMapUnloadChunks.startTiming()) { // Paper
+             WorldProvider worldprovider = this.world.worldProvider;
+@@ -233,17 +238,18 @@ public class PlayerChunkMap {
+             }
+             } // Paper timing
+         }
++        managedPlayersLock.readLock().unlock(); // NeonPaper
+ 
+     }
+ 
+-    public boolean a(int i, int j) {
++    public synchronized boolean a(int i, int j) { // NeonPaper - synchronized
+         long k = d(i, j);
+ 
+         return this.e.get(k) != null;
+     }
+ 
+     @Nullable
+-    public PlayerChunk getChunk(int i, int j) {
++    public synchronized PlayerChunk getChunk(int i, int j) { // NeonPaper - synchronized
+         return (PlayerChunk) this.e.get(d(i, j));
+     }
+ 
+@@ -309,12 +315,16 @@ public class PlayerChunkMap {
+         }
+ 
+         Collections.sort(chunkList, new ChunkCoordComparator(entityplayer));
+-        for (ChunkCoordIntPair pair : chunkList) {
+-            this.c(pair.x, pair.z).a(entityplayer);
+-        }
++        synchronized (this) { // NeonPaper - synchronized
++            for (ChunkCoordIntPair pair : chunkList) {
++                this.c(pair.x, pair.z).a(entityplayer);
++            }
++        } // NeonPaper
+         // CraftBukkit end
+ 
++        managedPlayersLock.writeLock().lock(); // NeonPaper
+         this.managedPlayers.add(entityplayer);
++        managedPlayersLock.writeLock().unlock(); // NeonPaper
+         this.e();
+     }
+ 
+@@ -335,7 +345,9 @@ public class PlayerChunkMap {
+             }
+         }
+ 
++        managedPlayersLock.writeLock().lock(); // NeonPaper
+         this.managedPlayers.remove(entityplayer);
++        managedPlayersLock.writeLock().unlock(); // NeonPaper
+         this.e();
+     }
+ 
+@@ -388,9 +400,11 @@ public class PlayerChunkMap {
+ 
+                 // CraftBukkit start - send nearest chunks first
+                 Collections.sort(chunksToLoad, new ChunkCoordComparator(entityplayer));
+-                for (ChunkCoordIntPair pair : chunksToLoad) {
+-                    this.c(pair.x, pair.z).a(entityplayer);
+-                }
++                synchronized (this) { // NeonPaper - synchronized
++                    for (ChunkCoordIntPair pair : chunksToLoad) {
++                        this.c(pair.x, pair.z).a(entityplayer);
++                    }
++                }//NeonPaper
+                 // CraftBukkit end
+             }
+         }
+@@ -408,7 +422,9 @@ public class PlayerChunkMap {
+         i = MathHelper.clamp(i, 3, 32);
+         if (i != this.j) {
+             int j = i - this.j;
++            managedPlayersLock.readLock().lock(); // NeonPaper
+             ArrayList arraylist = Lists.newArrayList(this.managedPlayers);
++            managedPlayersLock.readLock().unlock(); // NeonPaper
+             Iterator iterator = arraylist.iterator();
+ 
+             while (iterator.hasNext()) {
+@@ -438,23 +454,27 @@ public class PlayerChunkMap {
+             int j1;
+ 
+             if (j > 0) {
+-                for (i1 = k - i; i1 <= k + i; ++i1) {
+-                    for (j1 = l - i; j1 <= l + i; ++j1) {
+-                        PlayerChunk playerchunk = this.c(i1, j1);
++                synchronized (this) { // NeonPaper - synchronized
++                    for (i1 = k - i; i1 <= k + i; ++i1) {
++                        for (j1 = l - i; j1 <= l + i; ++j1) {
++                            PlayerChunk playerchunk = this.c(i1, j1);
+ 
+-                        if (!playerchunk.d(entityplayer)) {
+-                            playerchunk.a(entityplayer);
++                            if (!playerchunk.d(entityplayer)) {
++                                playerchunk.a(entityplayer);
++                            }
+                         }
+                     }
+-                }
++                }//NeonPaper
+             } else {
+-                for (i1 = k - oldViewDistance; i1 <= k + oldViewDistance; ++i1) {
+-                    for (j1 = l - oldViewDistance; j1 <= l + oldViewDistance; ++j1) {
+-                        if (!this.a(i1, j1, k, l, i)) {
+-                            this.c(i1, j1).b(entityplayer);
++                synchronized (this) { // NeonPaper - synchronized
++                    for (i1 = k - oldViewDistance; i1 <= k + oldViewDistance; ++i1) {
++                        for (j1 = l - oldViewDistance; j1 <= l + oldViewDistance; ++j1) {
++                            if (!this.a(i1, j1, k, l, i)) {
++                                this.c(i1, j1).b(entityplayer);
++                            }
+                         }
+                     }
+-                }
++                }//NeonPaper
+                 if (markSort) {
+                     this.e();
+                 }
+@@ -476,12 +496,12 @@ public class PlayerChunkMap {
+         return (long) i + 2147483647L | (long) j + 2147483647L << 32;
+     }
+ 
+-    public void a(PlayerChunk playerchunk) {
+-        org.spigotmc.AsyncCatcher.catchOp("Async Player Chunk Add"); // Paper
++    public synchronized void a(PlayerChunk playerchunk) { // NeonPaper - synchronized
++       // org.spigotmc.AsyncCatcher.catchOp("Async Player Chunk Add"); // Paper //NeonPaper
+         this.f.add(playerchunk);
+     }
+ 
+-    public void b(PlayerChunk playerchunk) {
++    public synchronized void b(PlayerChunk playerchunk) { // NeonPaper - synchronized
+         org.spigotmc.AsyncCatcher.catchOp("Async Player Chunk Remove"); // Paper
+         ChunkCoordIntPair chunkcoordintpair = playerchunk.a();
+         long i = d(chunkcoordintpair.x, chunkcoordintpair.z);
