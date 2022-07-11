@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Mon, 11 Jul 2022 19:54:51 +0500
+Subject: [PATCH] Expose-the-internal-current-tick
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index df0f563dac45acb6fc420f067f4f0a148576f94c..4b270fb1cca015e225115080aa17922bd3da567d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1978,5 +1978,9 @@ public final class CraftServer implements Server {
+         }
+         return new com.destroystokyo.paper.profile.CraftPlayerProfile(uuid, name);
+     }
++    @Override
++    public int getCurrentTick() {
++        return MinecraftServer.currentTick;
++    }
+     // Paper end
+ }
