@@ -13,7 +13,7 @@ index cf6f30277cff15112b9161cab97a8803a350b41c..e8e1bc1cdb646d16171a1806df9e26d4
              int k = MathHelper.floor(this.a.locZ - 1.0D + random.nextDouble() * 2.0D);
              BlockPosition blockposition = new BlockPosition(i, j, k);
 -            IBlockData iblockdata = world.getTypeIfLoaded(blockposition); // NeonPaper
-+            IBlockData iblockdata = world.getTypeIfLoaded(blockposition); // NeonЗдPaper
++            IBlockData iblockdata = world.getTypeIfLoaded(blockposition); // NeonPaper
              if (iblockdata == null) return; // NeonPaper
              IBlockData iblockdata1 = world.getType(blockposition.down());
              IBlockData iblockdata2 = this.a.getCarried();
