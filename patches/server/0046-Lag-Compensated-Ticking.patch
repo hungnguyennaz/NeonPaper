@@ -1,0 +1,69 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Mon, 11 Jul 2022 02:55:09 +0500
+Subject: [PATCH] -Lag-Compensated-Ticking
+
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+index e1f21fa24e214551afdf8e9eb1490906986ea08b..f35bfccc837961ed5390db7f73fb0fac20a2eb30 100644
+--- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
++++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
+@@ -199,4 +199,8 @@ public class NeonPaperConfig {
+     private static void lagCompensateEating() {
+         lagCompensateEating = getBoolean("lag-compensate-eating", true);
+     }
++    public static boolean lagCompensateTicking;
++    private static void lagCompensateTicking() {
++        lagCompensateTicking = getBoolean("lag-compensate-ticking", true);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
+index ae3065fb234f9011b600ca00ec464856d59028f4..816a44dc1d9846d7738faf1d19cd9e383e1fe722 100644
+--- a/src/main/java/net/minecraft/server/Entity.java
++++ b/src/main/java/net/minecraft/server/Entity.java
+@@ -274,6 +274,11 @@ public abstract class Entity implements ICommandListener, KeyedObject { // Paper
+         }
+     }
+ 
++    // NeonPaper start - Lag Compensated Ticking
++    protected boolean compensated;
++    protected void tick() {}
++    // NeonPaper end
++
+     public boolean removeScoreboardTag(String s) {
+         return this.aH.remove(s);
+     }
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 3f83529e77cf574f8ab01722074c4a8126a55826..5c7dfe6fe105699b257bd43b650b508797829014 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -70,6 +70,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+     public boolean f;
+     public int ping;
+     public boolean viewingCredits;
++    public List<Entity> lagCompensatedTicking = new ArrayList<>(); // NeonPaper - Lag Compensated Ticking
+     // Paper start - Player view distance API
+     private int viewDistance = -1;
+     public int getViewDistance() {
+@@ -346,7 +347,21 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+     public void playerTick() {
+         try {
+             super.B_();
++            // NeonPaper start - Lag Compensated Ticking
++            if (me.hungnguyennaz.neonpaper.NeonPaperConfig.lagCompensateTicking)
++            for (int i = 0; i < this.lagCompensatedTicking.size(); ++i) {
++                Entity entity = this.lagCompensatedTicking.get(i);
++                entity.tick();
++                // Check if size is > 9, this should cover some abuse
++                if (entity.dead || this.lagCompensatedTicking.size() > 9) {
++                    if (!entity.dead) {
++                        entity.compensated = false;
++                    }
+ 
++                    this.lagCompensatedTicking.remove(i--);
++                }
++            }
++            // NeonPaper end
+             for (int i = 0; i < this.inventory.getSize(); ++i) {
+                 ItemStack itemstack = this.inventory.getItem(i);
+ 

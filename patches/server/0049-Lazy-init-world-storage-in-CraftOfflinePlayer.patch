@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Mon, 11 Jul 2022 18:12:58 +0500
+Subject: [PATCH] Lazy-init-world-storage-in-CraftOfflinePlayer
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
+index 65f66c65e05943b3ee1a54b7ac35392e1e5aa8b9..2ae1eb8d4f05074cff559d38c2a455cdca36e81e 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftOfflinePlayer.java
+@@ -12,6 +12,7 @@ import net.minecraft.server.EntityPlayer;
+ import net.minecraft.server.NBTTagCompound;
+ import net.minecraft.server.WorldNBTStorage;
+ 
++import net.minecraft.server.WorldServer;
+ import org.bukkit.BanList;
+ import org.bukkit.Bukkit;
+ import org.bukkit.Location;
+@@ -27,12 +28,12 @@ import org.bukkit.plugin.Plugin;
+ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializable {
+     private final GameProfile profile;
+     private final CraftServer server;
+-    private final WorldNBTStorage storage;
++    private WorldNBTStorage storage; // NeonPaper - lazy init
+ 
+     protected CraftOfflinePlayer(CraftServer server, GameProfile profile) {
+         this.server = server;
+         this.profile = profile;
+-        this.storage = (WorldNBTStorage) (server.console.worlds.get(0).getDataManager());
++        // this.storage = (WorldNBTStorage) (server.console.worlds.get(0).getDataManager()); // Neonpaper lazy init
+ 
+     }
+ 
+@@ -168,9 +169,22 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
+         hash = 97 * hash + (this.getUniqueId() != null ? this.getUniqueId().hashCode() : 0);
+         return hash;
+     }
++    // NeonPaper - lazy
++    private WorldNBTStorage getStorageLazy() {
++        if (this.storage == null) {
++            net.minecraft.server.WorldServer worldServer = (WorldServer) server.console.worlds.get(0).getDataManager();
++            if (worldServer == null) {
++                throw new IllegalStateException("Cannot get world storage when there are no worlds loaded!");
++            } else {
++                this.storage = (WorldNBTStorage) worldServer.getDataManager();
++            }
++        }
+ 
++        return this.storage;
++    }
++    // NeonPaper end
+     private NBTTagCompound getData() {
+-        return storage.getPlayerData(getUniqueId().toString());
++        return getStorageLazy().getPlayerData(getUniqueId().toString());
+     }
+ 
+     private NBTTagCompound getBukkitData() {
+@@ -187,7 +201,7 @@ public class CraftOfflinePlayer implements OfflinePlayer, ConfigurationSerializa
+     }
+ 
+     private File getDataFile() {
+-        return new File(storage.getPlayerDir(), getUniqueId() + ".dat");
++        return new File(getStorageLazy().getPlayerDir(), getUniqueId() + ".dat");
+     }
+ 
+     public long getFirstPlayed() {
