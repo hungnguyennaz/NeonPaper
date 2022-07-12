@@ -1,0 +1,201 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Tue, 12 Jul 2022 13:14:33 +0500
+Subject: [PATCH] Optimize-VarInt-reading-Writing
+
+
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntByteDecoder.java b/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntByteDecoder.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..990a7b9368dd6e62a1f411d33b132271cab44193
+--- /dev/null
++++ b/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntByteDecoder.java
+@@ -0,0 +1,50 @@
++package me.hungnguyennaz.neonpaper.utils;
++
++import io.netty.util.ByteProcessor;
++
++public class VarIntByteDecoder implements ByteProcessor {
++    private int readVarint;
++    private int bytesRead;
++    private DecodeResult result = DecodeResult.TOO_SHORT;
++
++    @Override
++    public boolean process(byte k) {
++        if (k == 0 && bytesRead == 0) {
++            // tentatively say it's invalid, but there's a possibility of redemption
++            result = DecodeResult.RUN_OF_ZEROES;
++            return true;
++        }
++        if (result == DecodeResult.RUN_OF_ZEROES) {
++            return false;
++        }
++        readVarint |= (k & 0x7F) << bytesRead++ * 7;
++        if (bytesRead > 3) {
++            result = DecodeResult.TOO_BIG;
++            return false;
++        }
++        if ((k & 0x80) != 128) {
++            result = DecodeResult.SUCCESS;
++            return false;
++        }
++        return true;
++    }
++
++    public int getReadVarint() {
++        return readVarint;
++    }
++
++    public int getBytesRead() {
++        return bytesRead;
++    }
++
++    public DecodeResult getResult() {
++        return result;
++    }
++
++    public enum DecodeResult {
++        SUCCESS,
++        TOO_SHORT,
++        TOO_BIG,
++        RUN_OF_ZEROES
++    }
++}
+diff --git a/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntUtil.java b/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntUtil.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0cb054b77b5fdf4ca6011673530767f9209f4b46
+--- /dev/null
++++ b/src/main/java/me/hungnguyennaz/neonpaper/utils/VarIntUtil.java
+@@ -0,0 +1,114 @@
++package me.hungnguyennaz.neonpaper.utils;
++
++import io.netty.buffer.ByteBuf;
++import io.netty.handler.codec.CorruptedFrameException;
++
++public class VarIntUtil {
++    private static final int[] VARINT_EXACT_BYTE_LENGTHS = new int[33];
++
++    static {
++        for (int i = 0; i <= 32; ++i) {
++            VARINT_EXACT_BYTE_LENGTHS[i] = (int) Math.ceil((31d - (i - 1)) / 7d);
++        }
++        VARINT_EXACT_BYTE_LENGTHS[32] = 1; // Special case for the number 0.
++    }
++
++    /**
++     * Reads a Minecraft-style VarInt from the specified {@code buf}.
++     *
++     * @param buf the buffer to read from
++     * @return the decoded VarInt
++     */
++    public static int readVarInt(ByteBuf buf) {
++        int read = readVarIntSafely(buf);
++        if (read == Integer.MIN_VALUE) {
++            throw new CorruptedFrameException("Bad VarInt decoded");
++        }
++        return read;
++    }
++
++    /**
++     * Reads a Minecraft-style VarInt from the specified {@code buf}. The difference between this
++     * method and {@link #readVarInt(ByteBuf)} is that this function returns a sentinel value if the
++     * varint is invalid.
++     *
++     * @param buf the buffer to read from
++     * @return the decoded VarInt, or {@code Integer.MIN_VALUE} if the varint is invalid
++     */
++    public static int readVarIntSafely(ByteBuf buf) {
++        int i = 0;
++        int maxRead = Math.min(5, buf.readableBytes());
++        for (int j = 0; j < maxRead; j++) {
++            int k = buf.readByte();
++            i |= (k & 0x7F) << j * 7;
++            if ((k & 0x80) != 128) {
++                return i;
++            }
++        }
++        return Integer.MIN_VALUE;
++    }
++
++    /**
++     * Returns the exact byte size of {@code value} if it were encoded as a VarInt.
++     *
++     * @param value the value to encode
++     * @return the byte size of {@code value} if encoded as a VarInt
++     */
++    public static int varIntBytes(int value) {
++        return VARINT_EXACT_BYTE_LENGTHS[Integer.numberOfLeadingZeros(value)];
++    }
++
++    /**
++     * Writes a Minecraft-style VarInt to the specified {@code buf}.
++     *
++     * @param buf   the buffer to read from
++     * @param value the integer to write
++     */
++    public static void writeVarInt(ByteBuf buf, int value) {
++        // Peel the one and two byte count cases explicitly as they are the most common VarInt sizes
++        // that the proxy will write, to improve inlining.
++        if ((value & (0xFFFFFFFF << 7)) == 0) {
++            buf.writeByte(value);
++        } else if ((value & (0xFFFFFFFF << 14)) == 0) {
++            int w = (value & 0x7F | 0x80) << 8 | (value >>> 7);
++            buf.writeShort(w);
++        } else {
++            writeVarIntFull(buf, value);
++        }
++    }
++
++    private static void writeVarIntFull(ByteBuf buf, int value) {
++        // See https://steinborn.me/posts/performance/how-fast-can-you-write-a-varint/
++        if ((value & (0xFFFFFFFF << 7)) == 0) {
++            buf.writeByte(value);
++        } else if ((value & (0xFFFFFFFF << 14)) == 0) {
++            int w = (value & 0x7F | 0x80) << 8 | (value >>> 7);
++            buf.writeShort(w);
++        } else if ((value & (0xFFFFFFFF << 21)) == 0) {
++            int w = (value & 0x7F | 0x80) << 16 | ((value >>> 7) & 0x7F | 0x80) << 8 | (value >>> 14);
++            buf.writeMedium(w);
++        } else if ((value & (0xFFFFFFFF << 28)) == 0) {
++            int w = (value & 0x7F | 0x80) << 24 | (((value >>> 7) & 0x7F | 0x80) << 16)
++                    | ((value >>> 14) & 0x7F | 0x80) << 8 | (value >>> 21);
++            buf.writeInt(w);
++        } else {
++            int w = (value & 0x7F | 0x80) << 24 | ((value >>> 7) & 0x7F | 0x80) << 16
++                    | ((value >>> 14) & 0x7F | 0x80) << 8 | ((value >>> 21) & 0x7F | 0x80);
++            buf.writeInt(w);
++            buf.writeByte(value >>> 28);
++        }
++    }
++
++    /**
++     * Writes the specified {@code value} as a 21-bit Minecraft VarInt to the specified {@code buf}.
++     * The upper 11 bits will be discarded.
++     *
++     * @param buf   the buffer to read from
++     * @param value the integer to write
++     */
++    public static void write21BitVarInt(ByteBuf buf, int value) {
++        // See https://steinborn.me/posts/performance/how-fast-can-you-write-a-varint/
++        int w = (value & 0x7F | 0x80) << 16 | ((value >>> 7) & 0x7F | 0x80) << 8 | (value >>> 14);
++        buf.writeMedium(w);
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/ServerConnection.java b/src/main/java/net/minecraft/server/ServerConnection.java
+index e68112d39b6fc38bfdbe6e503a7c9d1bd1bdfb31..1636c5a590ea9070bcc02f31520ca505e698d231 100644
+--- a/src/main/java/net/minecraft/server/ServerConnection.java
++++ b/src/main/java/net/minecraft/server/ServerConnection.java
+@@ -113,7 +113,13 @@ public class ServerConnection {
+                         ;
+                     }
+                     if (!disableFlushConsolidation) channel.pipeline().addFirst(new FlushConsolidationHandler()); // Paper
+-                    channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("legacy_query", new LegacyPingHandler(ServerConnection.this)).addLast("splitter", new PacketSplitter()).addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND)).addLast("prepender", new PacketPrepender()).addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
++                   // channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("legacy_query", new LegacyPingHandler(ServerConnection.this)).addLast("splitter", new PacketSplitter()).addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND)).addLast("prepender", new PacketPrepender()).addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
++                    // NeonPaper start - newlines
++                    channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30))
++                            .addLast("legacy_query", new LegacyPingHandler(ServerConnection.this))
++                            .addLast("splitter", new PacketSplitter())
++                            .addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND))
++                            .addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
+                     NetworkManager networkmanager = new NetworkManager(EnumProtocolDirection.SERVERBOUND);
+ 
+                     pending.add(networkmanager); // Paper
