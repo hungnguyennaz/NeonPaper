@@ -28,7 +28,7 @@ index 0000000000000000000000000000000000000000..b3848b1eb027731b2a8adcdcbdb1967c
 --- /dev/null
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/IdentityStrategy.java
 @@ -0,0 +1,15 @@
-+package com.github.ruviolence.NeonPaper;
++package me.hungnguyennaz.neonpaper;
 +
 +import it.unimi.dsi.fastutil.Hash;
 +
