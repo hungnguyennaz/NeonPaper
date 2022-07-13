@@ -10,7 +10,7 @@ Removed DEBUG_ALL_BLOCK_STATES world type.
 Removed MethodProfiler.
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperCommand.java b/src/main/java/com/destroystokyo/paper/PaperCommand.java
-index 1898ab897ce0004e297ed81629c5aa54d8ae4dc1..5615a019962dc08ee2aa9833e46504d14e1abeab 100644
+index 1898ab897ce0004e297ed81629c5aa54d8ae4dc1..abdc89719e4526f97d97d1c8314e77e668755671 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperCommand.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperCommand.java
 @@ -154,7 +154,7 @@ public class PaperCommand extends Command {
