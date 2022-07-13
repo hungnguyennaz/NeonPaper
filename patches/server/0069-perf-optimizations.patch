@@ -9,22 +9,6 @@ Removed clientside code.
 Removed DEBUG_ALL_BLOCK_STATES world type.
 Removed MethodProfiler.
 
-diff --git a/src/main/java/com/destroystokyo/paper/PaperCommand.java b/src/main/java/com/destroystokyo/paper/PaperCommand.java
-index 1898ab897ce0004e297ed81629c5aa54d8ae4dc1..abdc89719e4526f97d97d1c8314e77e668755671 100644
---- a/src/main/java/com/destroystokyo/paper/PaperCommand.java
-+++ b/src/main/java/com/destroystokyo/paper/PaperCommand.java
-@@ -154,7 +154,7 @@ public class PaperCommand extends Command {
-                             .sorted((a, b) -> !a.getRight().equals(b.getRight()) ? b.getRight() - a.getRight() : a.getKey().toString().compareTo(b.getKey().toString()))
-                             .collect(Collectors.toList());
- 
--                    if (info == null || info.size() == 0) {
-+                    if (info.size() == 0) { // NeonPaper - Optimize
-                         sender.sendMessage(ChatColor.RED + "No entities found.");
-                         return;
-                     }
-diff --git a/src/main/java/com/github/ruviolence/NeonPaper/IdentityStrategy.java b/src/main/java/com/github/ruviolence/NeonPaper/IdentityStrategy.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..b3848b1eb027731b2a8adcdcbdb1967c54eab6be
 --- /dev/null
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/IdentityStrategy.java
 @@ -0,0 +1,15 @@
