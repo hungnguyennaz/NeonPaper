@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Softik Lord <dimap9986@gmail.com>
+Date: Thu, 14 Jul 2022 02:25:45 +0500
+Subject: [PATCH] add-caffeine-dependency
+
+
+diff --git a/pom.xml b/pom.xml
+index a2f5dc4692acb70b4a8ad6f849709ee711f16c55..846f3a3f23e6dedee98f9a6b2271309ce68cf993 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -68,7 +68,14 @@
+             <version>5.1.49</version>
+             <scope>runtime</scope>
+         </dependency>
+-
++        <!-- NeonPaper start - Add caffeine dependency -->
++        <dependency>
++            <groupId>com.github.ben-manes.caffeine</groupId>
++            <artifactId>caffeine</artifactId>
++            <version>2.9.3</version>
++            <scope>compile</scope>
++        </dependency>
++        <!-- NeonPaper end -->
+         <dependency>
+             <groupId>net.minecrell</groupId>
+             <artifactId>terminalconsoleappender</artifactId>
