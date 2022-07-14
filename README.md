@@ -1,7 +1,7 @@
 # NeonPaper
 ![image](https://user-images.githubusercontent.com/101444336/177084504-83f74460-52c3-46f1-8feb-7fc3cfa93a42.png)
 
-Fork of 1.12.2 [Dionysus](https://github.com/nopjmp/Dionysus) aimed at improving server performance and exploits fixing for anarchy servers.
+Fork of 1.12.2 [Dionysus](https://github.com/nopjmp/Dionysus) aimed at improving server performance and exploits fixing for anarchy servers. I don't work on this much because i'm lazy and likely don't know how to code.
 
 ## How To Use
 
