@@ -2,6 +2,7 @@ From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Softik Lord <dimap9986@gmail.com>
 Date: Mon, 11 Jul 2022 20:59:50 +0500
 Subject: [PATCH] Maps-shouldn-t-load-chunk
+
 Previously maps would load all chunks in a certain radius depending on
 
  their scale when trying to update their content. This would result in

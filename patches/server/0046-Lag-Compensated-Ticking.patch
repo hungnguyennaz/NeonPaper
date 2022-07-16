@@ -5,7 +5,7 @@ Subject: [PATCH] -Lag-Compensated-Ticking
 
 
 diff --git a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
-index e1f21fa24e214551afdf8e9eb1490906986ea08b..f35bfccc837961ed5390db7f73fb0fac20a2eb30 100644
+index e1f21fa24e214551afdf8e9eb1490906986ea08b..01458945337af8dafc3fc9ebf2c18572f08f1a5e 100644
 --- a/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 +++ b/src/main/java/me/hungnguyennaz/neonpaper/NeonPaperConfig.java
 @@ -199,4 +199,8 @@ public class NeonPaperConfig {

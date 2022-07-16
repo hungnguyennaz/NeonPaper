@@ -5,7 +5,7 @@ Subject: [PATCH] Fix-MC-161754
 
 
 diff --git a/src/main/java/net/minecraft/server/ContainerHorse.java b/src/main/java/net/minecraft/server/ContainerHorse.java
-index 1f2d0a58fd2bbd319e2bbc74a1f3370b26318c8d..4187da234429230dc56114f74d145b224cf887c4 100644
+index 1f2d0a58fd2bbd319e2bbc74a1f3370b26318c8d..a94028a16749b5f7fa643b3cf0d139db8f090da3 100644
 --- a/src/main/java/net/minecraft/server/ContainerHorse.java
 +++ b/src/main/java/net/minecraft/server/ContainerHorse.java
 @@ -71,7 +71,7 @@ public class ContainerHorse extends Container {

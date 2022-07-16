@@ -3,7 +3,7 @@ From: Softik Lord <dimap9986@gmail.com>
 Date: Wed, 13 Jul 2022 21:17:41 +0500
 Subject: [PATCH] Fix-stuck-in-sneak-when-changing-worlds-MC-10657
 
-twersytaytggfdscx 
+twersytaytggfdscx
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
 index a30322f50a8c2b8163fc7036f3a74d58bb3bd8fe..1fe685fce9f79466f4002b87c1e996c145e9a06e 100644

@@ -4,19 +4,6 @@ Date: Mon, 11 Jul 2022 19:51:44 +0500
 Subject: [PATCH] Better-handling-of-some-ItemMeta
 
 
-diff --git a/src/main/java/net/minecraft/server/EntityEnderman.java b/src/main/java/net/minecraft/server/EntityEnderman.java
-index cf6f30277cff15112b9161cab97a8803a350b41c..e8e1bc1cdb646d16171a1806df9e26d4d3f7bcce 100644
---- a/src/main/java/net/minecraft/server/EntityEnderman.java
-+++ b/src/main/java/net/minecraft/server/EntityEnderman.java
-@@ -378,7 +378,7 @@ public class EntityEnderman extends EntityMonster {
-             int j = MathHelper.floor(this.a.locY + random.nextDouble() * 2.0D);
-             int k = MathHelper.floor(this.a.locZ - 1.0D + random.nextDouble() * 2.0D);
-             BlockPosition blockposition = new BlockPosition(i, j, k);
--            IBlockData iblockdata = world.getTypeIfLoaded(blockposition); // NeonPaper
-+            IBlockData iblockdata = world.getTypeIfLoaded(blockposition); // NeonPaper
-             if (iblockdata == null) return; // NeonPaper
-             IBlockData iblockdata1 = world.getType(blockposition.down());
-             IBlockData iblockdata2 = this.a.getCarried();
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
 index 7b3567894468d7c38c364c6f2be7d8d7c78e860a..87dc96f550b86c6b94dd232772b365e4a5deb303 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBanner.java
